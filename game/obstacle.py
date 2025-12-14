@@ -89,3 +89,8 @@ class Obstacle(BaseObject):
     def is_offscreen(self): #проверка, вышло ли препятствие за левую границу
         return self.rect.x < -self.rect.width
         #если объект позиця меньше чем позиция за границой (-), то значит объект вышел за границу 50px - справа, -50px слева
+
+    def draw(self, screen): #рисуем препятствие
+        #screen - игровое окно, на котомром рисуем
+        if self.sprite: #если есть в спрайтах
+            screen.blit(self.sprite, self.rect)
