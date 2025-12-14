@@ -46,3 +46,17 @@ class BaseObject:
                 #2 % 2 = 0 - вернулись к началу
                 #(0 + 1) % 2 = 1 % 2 = 1
                 #...
+
+    def draw(self, screen): #screen - поверхность, где рисуются объекты
+
+        if self.current_animation and self.current_animation in self.sprites: #проверка есть ли анимация, и есть ли она в словаре
+            frames = self.sprites[self.current_animation] #получаем список кадров frames = self.sprites["run"]  # = [кадр0, кадр1]
+            screen.blit(frames[self.animation_frame], self.rect)
+            #bit - рисует одну картинку на другой
+            #рисует текущий кадр в self.rect
+            #self.rect.x, self.rect.y = координаты
+            #self.rect.width, self.rect.height = размеры
+            #frames[0]
+
+        elif self.sprite: #если у нас один спрайт, то рисуем его
+            screen.blit(self.sprite, self.rect)
