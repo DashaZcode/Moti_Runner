@@ -94,3 +94,15 @@ class Obstacle(BaseObject):
         #screen - игровое окно, на котомром рисуем
         if self.sprite: #если есть в спрайтах
             screen.blit(self.sprite, self.rect)
+
+    def collides_with(self, other): #проверка столкновения с другим объектом.
+        # !!!создаем хитбоксы
+        if self.is_flying:
+            #птица
+            bird_hitbox = self.rect.inflate(-25, -25) #уменьшаем размер по сравнению с оригиналом
+            return bird_hitbox.colliderect(other.rect) #возвращаем столкновение
+        else:
+            #кости
+            ground_hitbox = self.rect.inflate(-30, -20)
+            ground_hitbox.y += 15
+            return ground_hitbox.colliderect(other.rect)
