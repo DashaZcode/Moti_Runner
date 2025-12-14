@@ -17,4 +17,22 @@ class Obstacle(BaseObject):
         #загружает картинку препятствия из файла и сохраняет в self.sprite
         self.load_obstacle_sprite()
 
+    def load_obstacle_sprite(self):
+        assets_path = SpriteLoader.get_assets_path() #получаем путь к папке assets
+        obstacles_path = os.path.join(assets_path, 'obstacles') #объединяем путь к папке с перепятсвиями "C:\projects\moti_runner\assets\obstacles"
+
+        if os.path.exists(obstacles_path): #есть ли путь к файлу
+            if self.obstacle_type == 'bird':
+                sprite_file = os.path.join(obstacles_path, "bird.png")
+
+                if os.path.exists(sprite_file):
+                    sprite = SpriteLoader.load_sprite(sprite_file)
+
+                    if sprite:
+                        self.sprite = sprite #загрузили картинку
+                        self.is_flying = True #летающая птица
+
+                        self.rect.width = self.sprite.get_width() #возвращает ширину спрайта в пикселях
+                        self.rect.height = self.sprite.get_height() #высоту
+                        return
     
