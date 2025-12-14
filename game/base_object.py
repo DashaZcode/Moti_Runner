@@ -1,4 +1,5 @@
 import pygame
+from .sprite_loader import SpriteLoader
 
 class BaseObject:
     def __init__(self, x, y, width, height, color=(255, 255, 255)):
@@ -16,4 +17,6 @@ class BaseObject:
         self.animation_frame = 0 #индекс анмации "1"
         self.animation_timer = 0 #таймер для анимации
 
-#анимации прописать в будущем
+    #используся для загрузки спрайта объекта
+    def load_sprite(self, sprite_path):
+        self.sprite = SpriteLoader.load_sprite(sprite_path, self.width, self.height)
