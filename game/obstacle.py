@@ -52,3 +52,31 @@ class Obstacle(BaseObject):
 
                     self.rect.width = self.sprite.get_width()
                     self.rect.height = self.sprite.get_height()
+
+    def create_random(screen_width, ground_y, speed):
+        #screen_width - заданная ширина экрана пользователем
+        #ground_y расположение земли
+
+        #определяем тип препятствия (40% шанс на птицу)
+        is_bird = random.random() < 0.40
+
+        if is_bird:
+            #если птица
+            width = 60
+            height = 40
+            color = (255, 255, 255)
+            y = ground_y - random.randint(200, 250) #задаем на оси y, на какой высоте она будет появлятся
+            obstacle_type = 'bird'
+        else:
+            #кость на земле
+            width = random.randint(170, 200)
+            height = random.randint(170, 200)
+            color = (255, 255, 255)
+            y = ground_y - 10
+            obstacle_type = None
+
+        x = screen_width + width
+        #screen_width=1200, width=50 -> x=1250
+        #gрепятствие появится на 1250px 50px за правым краем экрана 1200px
+
+        return Obstacle(x, y, width, height, color, speed, obstacle_type)
