@@ -80,3 +80,8 @@ class Obstacle(BaseObject):
         #gрепятствие появится на 1250px 50px за правым краем экрана 1200px
 
         return Obstacle(x, y, width, height, color, speed, obstacle_type)
+
+    def update(self, dt): #движение препятсвий влево
+        self.rect.x = self.rect.x - self.speed * dt
+    #=speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px
+    #за один кадр препятствие сдвинется на 4.8 пикселя влево
