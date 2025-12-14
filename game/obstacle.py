@@ -83,5 +83,9 @@ class Obstacle(BaseObject):
 
     def update(self, dt): #движение препятсвий влево
         self.rect.x = self.rect.x - self.speed * dt
-    #=speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px
+    #self.rect.x = 1250 за гарницей, speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px
     #за один кадр препятствие сдвинется на 4.8 пикселя влево
+
+    def is_offscreen(self): #проверка, вышло ли препятствие за левую границу
+        return self.rect.x < -self.rect.width
+        #если объект позиця меньше чем позиция за границой (-), то значит объект вышел за границу 50px - справа, -50px слева
