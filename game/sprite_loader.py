@@ -16,6 +16,8 @@ class SpriteLoader:
         # для всех файлов, если не указан размер, то он останется изначальным. Если указан, то он будет менять размер на указанный
         return sprite
 
+    load_sprite = staticmethod(load_sprite)
+
     #функция для отражения каждого спрайта !!!инструмент!!!
     def flip_sprites(sprites, flip_x=False, flip_y=False):
         return [pygame.transform.flip(sprite, flip_x, flip_y) for sprite in sprites]
@@ -24,4 +26,4 @@ class SpriteLoader:
         #кадр1 бег влево,   отражённая версия
         #кадр2 бег влево,... отражённая версия
     # ]
-
+    flip_sprites = staticmethod(flip_sprites)
