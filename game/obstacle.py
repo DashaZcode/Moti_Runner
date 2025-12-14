@@ -35,4 +35,10 @@ class Obstacle(BaseObject):
                         self.rect.width = self.sprite.get_width() #возвращает ширину спрайта в пикселях
                         self.rect.height = self.sprite.get_height() #высоту
                         return
-    
+
+            all_files = os.listdir(obstacles_path) #загружаем спрайты
+            sprite_files = [] #создаем список не для спрайтов птицы
+
+            for file_name in all_files: #если спрайт не птрицы, добавляем его в список
+                if file_name.lower() != 'bird.png':
+                    sprite_files.append(file_name)
