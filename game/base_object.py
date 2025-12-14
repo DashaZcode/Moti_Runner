@@ -60,3 +60,12 @@ class BaseObject:
 
         elif self.sprite: #если у нас один спрайт, то рисуем его
             screen.blit(self.sprite, self.rect)
+
+    #проверка столкновения с другим объектом colliderect
+    def collides_with(self, other):
+        return self.rect.colliderect(other.rect)
+        # self.rect - текущий объект сталкивается с другим other.rect
+
+    def update(self, dt): #вызывает родительский метод update_animation для создания дочерних методов
+        self.update_animation(dt)
+
