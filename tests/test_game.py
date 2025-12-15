@@ -69,6 +69,40 @@ class TestSoundManager(unittest.TestCase):
         # Нет exception, просто ничего не играет
         sm.play('nonexistent')  # Не должно падать
 
+class TestHeart(unittest.TestCase):
+    def test_create_random(self):
+        # Проверяем, что сердечко создаётся за правым краем экрана
+        heart = Heart.create_random(800, 500)
+        self.assertGreater(heart.rect.x, 799)  # За экраном справа
+        self.assertLess(heart.rect.y, 500 - 100)  # Выше земли
+        self.assertGreater(heart.rect.y, 500 - 300)
+
+    def test_update(self):
+        # Проверяем движение влево
+        heart = Heart(800, 300, size=40)
+        heart.speed = 300  # Явно задаём скорость
+        heart.update(0.1)  # 0.1 секунды
+        expected_x = 800 - 300 * 0.1  # 300 px/s * 0.1s = 30 px влево
+        self.assertAlmostEqual(heart.rect.x, expected_x, delta=1)
+
+    def test_is_offscreen(self):
+        # За левым краем — offscreen
+        heart_off = Heart(-50, 300, size=40)
+        self.assertTrue(heart_off.is_offscreen())
+
+        # На экране — не offscreen
+        heart_on = Heart(400, 300, size=40)
+        self.assertFalse(heart_on.is_offscreen())
+
+    def test_collides_with_player(self):
+        # Создаём фейковый игрок
+        player = Player(100, 400)
+        heart = Heart(110, 410, size=40)  # Пересекается
+        self.assertTrue(player.collides_with(heart))
+
+        heart_no = Heart(200, 410, size=40)  # Не пересекается
+        self.assertFalse(player.collides_with(heart_no))
+
 if __name__ == '__main__':
     unittest.main()
 
