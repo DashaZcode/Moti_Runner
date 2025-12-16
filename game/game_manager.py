@@ -4,6 +4,7 @@ from .obstacle import Obstacle
 from .sprite_loader import SpriteLoader
 from .sound_manager import SoundManager
 import os
+import random
 
 
 class GameManager:
@@ -98,3 +99,17 @@ class GameManager:
         sprites['game_over'] = SpriteLoader.load_sprite(game_over_file, 600, 150)
 
         return sprites
+
+    def create_initial_clouds(self): #создание начальных облаков
+        for _ in range(5): #цикл 5 раз без переменной
+            x = random.randint(0, self.screen_width)
+            #случайное расположение облаков от 0 до ширины экрана
+            #сли screen_width=1200, x может быть любым
+
+            #генерируем сучайную высоту и скорость
+            y = random.randint(50, 300)
+            speed = random.randint(30, 70)
+
+            #добавляем новое облако в список self.clouds
+            self.clouds.append({'x': x, 'y': y, 'speed': speed})
+    
