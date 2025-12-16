@@ -3,6 +3,7 @@ from .player import Player
 from .obstacle import Obstacle
 from .sprite_loader import SpriteLoader
 from .sound_manager import SoundManager
+import os
 
 
 class GameManager:
@@ -51,3 +52,29 @@ class GameManager:
         self.create_initial_clouds() #создаем начальные облака
 
         self.sound_manager.play_music() #запуск фоновой музыки
+
+    def load_background_sprites(self): #загрузка фоновых спрайтов
+
+        assets_path = SpriteLoader.get_assets_path()
+        background_path = os.path.join(assets_path, 'background')
+
+        sprites = {
+            'ground': None, #оземля, пока не загружено
+            'cloud': None, #облака
+            'mountain': None #горы
+        }
+
+        #ЗАГРУЖАЕМ ФАЙЛЫ В СЛОВАРЬ
+        #земля
+        ground_file = os.path.join(background_path, 'ground.png')
+        sprites['ground'] = SpriteLoader.load_sprite(ground_file)
+
+        #облако
+        cloud_file = os.path.join(background_path, 'cloud.png')
+        sprites['cloud'] = SpriteLoader.load_sprite(cloud_file, 150, 90)
+
+        #горы
+        mountain_file = os.path.join(background_path, 'mountain.png')
+        sprites['mountain'] = SpriteLoader.load_sprite(mountain_file, 300, 225)
+
+        return sprites
