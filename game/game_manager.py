@@ -152,3 +152,16 @@ class GameManager:
 
         #если ни одно из событий не привело к выходу из игры, возвращаем True, чтобы главный цикл продолжил работу
         return True
+
+    def toggle_pause(self): #включение/выключение паузы
+        self.is_paused = not self.is_paused #нажимаем клавишу P, вызывается toggle_pause():
+        if self.is_paused:
+            self.sound_manager.play_sound('pause')
+            print("Пауза")
+        else:
+            self.sound_manager.play_sound('resume')
+            print("Игра работает")
+
+    def update(self, dt): #игра
+        if self.game_over or self.is_paused: #если на паузе или игрок умер, выходим из мтеода
+            return
