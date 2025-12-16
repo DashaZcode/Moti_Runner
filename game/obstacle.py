@@ -45,7 +45,7 @@ class Obstacle(BaseObject):
                     sprite_files.append(file_name)
 
             if sprite_files:
-                sprite_file = os.path.join(obstacles_path, random.choice(sprite_files))
+                sprite_file = os.path.join(obstacles_path, random.choice(sprite_files)) #рандомизируем появление объекта
                 sprite = SpriteLoader.load_sprite(sprite_file)
                 if sprite:
                     self.sprite = sprite
