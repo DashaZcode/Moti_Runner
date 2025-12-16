@@ -265,3 +265,25 @@ class GameManager:
                 #ширина картинки
                 screen.blit(self.background_sprites['ground'], (x, self.ground_y)) #от левого края от вверхнеего края 700
                 # (то есть внизу займет 100 пикслей)
+
+    #рисуем все
+    def draw(self, screen):
+        #фон
+        self.draw_background(screen)
+
+        #препятствия
+        for obstacle in self.obstacles:
+            obstacle.draw(screen)
+
+        #игрок
+        self.player.draw(screen)
+
+        #HUD
+        self.draw_hud(screen)
+
+        #Game Over
+        if self.game_over:
+            self.draw_game_over(screen)
+        #пауза
+        elif self.is_paused:
+            self.draw_pause_menu(screen)
