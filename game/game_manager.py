@@ -112,4 +112,43 @@ class GameManager:
 
             #добавляем новое облако в список self.clouds
             self.clouds.append({'x': x, 'y': y, 'speed': speed})
-    
+
+    def handle_events(self): #обработка событий
+
+        #йикл for, который проходит по ВСЕМ событиям в очереди событий pygame
+        for event in pygame.event.get():
+
+            #если это событие закрытия окна QUIT
+            if event.type == pygame.QUIT:
+                #возвращаем False - завершение
+                return False
+
+            #если событие нажатие на клавиатуру KEYDOWN
+            elif event.type == pygame.KEYDOWN:
+
+                #Если это ПРОБЕЛ, игра НЕ закончена (not self.game_over), игра НЕ на паузе (not self.is_paused)
+                if event.key == pygame.K_SPACE and not self.game_over and not self.is_paused:
+                    #воспроизводим звук прыжка
+                    self.sound_manager.play_sound('jump')
+                    #вызываем метод jump() для прыжка
+                    self.player.jump()
+
+                #если нажата клавиша R (K_r) И игра закончена
+                elif event.key == pygame.K_r and self.game_over:
+                    #звук кнопки
+                    self.sound_manager.play_sound('button')
+                    #перезапускаем игру
+                    self.reset_game()
+
+                #если нажата клавиша ESC
+                elif event.key == pygame.K_ESCAPE:
+                    #возвращаем False для выхода из игры
+                    return False
+
+                #если нажата клавиша P (K_p)
+                elif event.key == pygame.K_p:
+                    #переключаем состояние паузы включить/выключить
+                    self.toggle_pause()
+
+        #если ни одно из событий не привело к выходу из игры, возвращаем True, чтобы главный цикл продолжил работу
+        return True
