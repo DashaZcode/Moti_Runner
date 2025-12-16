@@ -78,3 +78,23 @@ class GameManager:
         sprites['mountain'] = SpriteLoader.load_sprite(mountain_file, 300, 225)
 
         return sprites
+
+    def load_ui_sprites(self): #Загрузка UI спрайтов
+
+        assets_path = SpriteLoader.get_assets_path()
+        ui_path = os.path.join(assets_path, 'ui')
+
+        sprites = {
+            'heart': None, #сердце
+            'game_over': None, #сердце
+        }
+
+        #сердечко для жизней
+        heart_file = os.path.join(ui_path, 'heart.png')
+        sprites['heart'] = SpriteLoader.load_sprite(heart_file, 45, 45)
+
+        #game Over
+        game_over_file = os.path.join(ui_path, 'game_over.png')
+        sprites['game_over'] = SpriteLoader.load_sprite(game_over_file, 600, 150)
+
+        return sprites
