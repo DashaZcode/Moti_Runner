@@ -162,6 +162,63 @@ class GameManager:
             self.sound_manager.play_sound('resume')
             print("Игра работает")
 
-    def update(self, dt): #игра
-        if self.game_over or self.is_paused: #если на паузе или игрок умер, выходим из мтеода
+    def update(self, dt):  # игра
+        if self.game_over or self.is_paused:  # если на паузе или игрок умер, выходим из мтеода
             return
+
+        # вызываем игрока и пишем его время
+        self.player.update(dt)
+
+        # накапливает время с момента создания последнего препятствия
+        self.obstacle_timer += dt
+
+        # если накопленое время превышает 1.5 интервал
+        if self.obstacle_timer >= self.obstacle_interval:
+            # добавляет новый объект в конце списка
+            self.obstacles.append(Obstacle.create_random(self.screen_width, self.ground_y, self.game_speed))
+            self.obstacle_timer = 0  # сбрасывает таймер препятствия в 0, чтобы начать отсчет до следующего препятствия
+
+            # обновляем препятствия
+            for obstacle in self.obstacles[:]:  # копируем список для удаления препятсвий
+                obstacle.update(dt)  # перпятсвие движется влево каждый кадр
+
+                if self.player.collides_with(obstacle):  # если грок столкнулся с препятствием
+                    self.sound_manager.play_sound('collision')
+                    self.lives -= 1  # уменьшаем жизни
+
+                    # удаляем препятствие при столкновении
+                    self.obstacles.remove(obstacle)
+
+                    if self.lives <= 0:  # если 0 жиней
+                        self.game_over = True  # заканчиваем игру
+                        return
+                    else:
+                        # игрок получает неуязвимость после потери жизни
+                        self.player.invulnerable = True  # игрок не может получать урон
+                        self.player.invulnerable_timer = 1.0  # 1 секунда неуязвимости
+
+                # увеличиваем счет, если прошли препятствие
+
+                # Правая сторона препятствия ЛЕВЕЕ левой стороны игрока
+                if not obstacle.passed and obstacle.rect.x + obstacle.rect.width < self.player.rect.x:
+                    # obstacle.passed - препятствие еще не пройдено
+                    # obstacle.rect.x + obstacle.rect.width -  левая координата препятствия + ширина препятствия = правая координата препятствия
+                    # < self.player.rect.x - левая координата игрока
+                    obstacle.passed = True
+                    self.score += 1
+                    self.sound_manager.play_sound('score')
+
+                    # увеличиваем скорость каждые n очков
+                    if self.score % self.speed_increase_interval == 0:
+                        # Если счет делится без остатка на интервалл, увеличиваем скорость
+                        self.game_speed += 50
+                        self.obstacle_interval = max(1.0, self.obstacle_interval - 0.05)
+                        # eменьшаем интервал между препятствиями на 0.05 секунды
+                        # max(1.0, ...) - гарантирует что интервал не станет меньше 1.0 секунды
+
+                # удаляем препятствия за экраном
+                if obstacle.is_offscreen():
+                    self.obstacles.remove(obstacle)
+
+            # обновляем игрока неуязвимость
+            self.player.update_invulnerability(dt)
