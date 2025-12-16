@@ -287,3 +287,31 @@ class GameManager:
         #пауза
         elif self.is_paused:
             self.draw_pause_menu(screen)
+
+    #!!!!!!!!!!!!! ТУТ ФУНКЦИИ ИНТЕРФЕЙСА
+
+    def reset_game(self):
+        self.player.reset()
+        self.obstacles.clear()
+        self.clouds.clear()
+        self.score = 0
+        self.lives = 3  # Восстанавливаем жизни
+        self.game_over = False
+        self.is_paused = False
+        self.obstacle_timer = 0
+        self.game_speed = 400
+        self.obstacle_interval = 1.8
+
+        if hasattr(self, 'game_over_sound_played'): #если уже играла музыка проигрыша, удаляем ее
+            del self.game_over_sound_played
+
+        self.create_initial_clouds()
+        print("Game reset")
+
+    def get_game_result(self):
+        #получение результатов игры
+        return {
+            'score': self.score,
+            'speed': int(self.game_speed),
+            'lives': self.lives
+        }
