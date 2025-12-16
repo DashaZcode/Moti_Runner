@@ -288,7 +288,132 @@ class GameManager:
         elif self.is_paused:
             self.draw_pause_menu(screen)
 
-    #!!!!!!!!!!!!! ТУТ ФУНКЦИИ ИНТЕРФЕЙСА
+
+    def draw_hud(self, screen) :
+        # Создаем текст с текущим счетом розовым цветом
+        score_text = self.font.render(f'SCORE: {self.score}', True, (200, 100, 150))
+        screen.blit(score_text, (30, 30))        # Рисуем текст в левом верхнем углу (координаты 30, 30)
+
+        # Преобразуем скорость в целое число для отображения
+        speed_text = self.font.render(f'SPEED: {int(self.game_speed)}', True, (200, 100, 150))
+        screen.blit(speed_text, (30, 80))         # Рисуем под счетом (с отступом 50 пикселей по вертикали)
+
+        # Отображаем количество оставшихся жизней
+        lives_text = self.font.render(f'LIVES: {self.lives}', True, (200, 100, 150))
+        screen.blit(lives_text, (30, 130))       # Рисуем под скоростью
+
+        # Отображение сердечек
+        if self.ui_sprites['heart'] :         # Проверяем, есть ли спрайт сердца в словаре UI-спрайтов
+            for i in range(self.lives) :
+                screen.blit(self.ui_sprites['heart'], (250 + i * 50, 125))              # Рисуем сердечки по количеству жизней (каждое сердце - 50 пикселей правее предыдущего) справа от текста с жизнями
+
+        # Управление - УБИРАЕМ DOWN - Duck
+        # Список подсказок по управлению
+        controls = [
+            "SPACE - Jump",
+            "P - Pause",
+            "R - Restart",
+            "ESC - Quit"
+        ]
+
+        # Рисуем каждую подсказку в правом верхнем углу
+        for i, control in enumerate(controls) :
+            text = self.font.render(control, True, (220, 140, 190))         # Создаем текст для каждой команды управления
+            screen.blit(text, (self.screen_width - text.get_width() - 30, 30 + i * 50))         # Располагаем справа с отступом 30 пикселей от края
+                                                                                             # Выравниваем по правому краю, вычитая ширину текста
+
+        # Индикатор паузы
+        # Если игра на паузе - показываем большой текст "PAUSED" по центру
+        if self.is_paused :
+            pause_text = self.big_font.render("PAUSED", True, (255, 100, 150))
+            screen.blit(pause_text,                      # Центрируем текст по горизонтали и вертикали
+                        (self.screen_width // 2 - pause_text.get_width() // 2,
+                         self.screen_height // 2 - 50))
+
+    def draw_pause_menu(self, screen) :
+        # Полупрозрачный overlay
+        overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
+        overlay.fill((50, 0, 30, 180))       # Заливаем темно-розовым с прозрачностью (180 из 255)
+        screen.blit(overlay, (0, 0))          # Рисуем затемнение поверх всего экрана
+
+        # Заголовок - только текст, без спрайта
+        pause_text = self.big_font.render('PAUSED', True, (255, 100, 150))
+        screen.blit(pause_text,                       # Центрируем заголовок в верхней части экрана
+                    (self.screen_width // 2 - pause_text.get_width() // 2,
+                     self.screen_height // 2 - 200))
+
+        # Опции меню
+        options = [
+            "Press P to Resume",
+            "M - Toggle Music",
+            "S - Toggle Sound",
+            "+/- - Adjust Volume",
+            "ESC - Quit Game"
+        ]
+
+        # Рисуем каждую опцию по центру экрана
+        for i, option in enumerate(options) :
+            option_text = self.font.render(option, True, (255, 200, 220))
+            screen.blit(option_text,                          # Располагаем опции вертикально с интервалом 60 пикселей
+                        (self.screen_width // 2 - option_text.get_width() // 2,
+                         self.screen_height // 2 - 50 + i * 60))
+
+        # Статус звука
+        # Выбираем иконки в зависимости от включенного звука/музыки
+        sound_icon = "🔊" if self.sound_manager.sound_enabled else "🔇"
+        music_icon = "🎵" if self.sound_manager.music_enabled else "🔇"
+        status_text = self.font.render(              # Создаем строку со статусом аудио
+            f'Sound: {sound_icon}  Music: {music_icon}  Volume: {int(self.sound_manager.volume * 100)}%',
+            True, (255, 180, 200))
+        screen.blit(status_text,          # Выводим статус внизу экрана
+                    (self.screen_width // 2 - status_text.get_width() // 2,
+                     self.screen_height // 2 + 250))
+
+    def draw_game_over(self, screen) :
+        # Полупрозрачное затемнение
+        overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
+        overlay.fill((50, 0, 30, 150))       # Темно-розовый с меньшей прозрачностью
+        screen.blit(overlay, (0, 0))
+
+        # Звук Game Over (проигрываем один раз)
+        # Проверяем, был ли уже проигран звук (чтобы не повторять)
+        if not hasattr(self, 'game_over_sound_played') :
+            self.sound_manager.play_sound('game_over')         # Проигрываем звук "game over"
+            self.game_over_sound_played = True                 # Устанавливаем флаг, что звук уже проигран
+
+        # Game Over текст или спрайт
+        # Если есть спрайт для "Game Over" - используем его
+        if self.ui_sprites['game_over'] :
+            x = self.screen_width // 2 - self.ui_sprites['game_over'].get_width() // 2           # Центрируем спрайт по горизонтали
+            y = self.screen_height // 2 - 200           # Фиксированная позиция по вертикали
+            screen.blit(self.ui_sprites['game_over'], (x, y))
+        else :            # Если спрайта нет - рисуем текст
+            game_over_text = self.big_font.render('GAME OVER', True, (255, 100, 150))
+            screen.blit(game_over_text,
+                        (self.screen_width // 2 - game_over_text.get_width() // 2,
+                         self.screen_height // 2 - 150))
+
+        # Статистика
+        stats = [
+            f"Final Score: {self.score}",             # Финальный счет
+            f"Max Speed: {int(self.game_speed)}",     # Максимальная скорость
+            f"Obstacles Passed: {self.score}",        # Препятствий пройдено:
+            f"Lives Lost: {3 - self.lives}" if self.lives < 3 else f"Lives: {self.lives}/3"       # Если жизни потеряны - показываем сколько, иначе показываем полные жизни
+        ]
+
+        # Рисуем статистику по центру экрана
+        for i, stat in enumerate(stats) :
+            stat_text = self.font.render(stat, True, (255, 200, 220))
+            screen.blit(stat_text,
+                        (self.screen_width // 2 - stat_text.get_width() // 2,
+                         self.screen_height // 2 - 20 + i * 60))
+
+        # Инструкция, что делать дальше
+        restart_text = self.font.render('Press R to restart or ESC to quit', True, (255, 180, 200))
+        screen.blit(restart_text,
+                    (self.screen_width // 2 - restart_text.get_width() // 2,
+                     self.screen_height // 2 + 180))
+
 
     def reset_game(self):
         self.player.reset()
