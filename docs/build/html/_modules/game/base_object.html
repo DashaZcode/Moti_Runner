@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.base_object &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.base_object</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.base_object</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль base_object - базовый класс для всех игровых объектов.</span>
+
+<span class="sd">Содержит класс BaseObject, который предоставляет общую функциональность</span>
+<span class="sd">для всех игровых объектов: геометрию, анимации, коллизии и отрисовку.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sprite_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpriteLoader</span>
+
+
+<div class="viewcode-block" id="BaseObject">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseObject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Базовый класс для всех игровых объектов.</span>
+
+<span class="sd">    Предоставляет общую функциональность для игровых объектов:</span>
+<span class="sd">    - Геометрию и позиционирование</span>
+<span class="sd">    - Анимации и спрайты</span>
+<span class="sd">    - Коллизии</span>
+<span class="sd">    - Отрисовку</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        rect (pygame.Rect): Прямоугольник, хранящий геометрию объекта.</span>
+<span class="sd">            Система координат начинается в верхнем левом углу экрана.</span>
+<span class="sd">        color (tuple): Цвет объекта в формате RGB.</span>
+<span class="sd">        width (int): Ширина объекта в пикселях.</span>
+<span class="sd">        height (int): Высота объекта в пикселях.</span>
+<span class="sd">        sprite (pygame.Surface): Текущий спрайт объекта.</span>
+<span class="sd">        sprites (dict): Словарь для хранения нескольких анимаций.</span>
+<span class="sd">            Ключ - имя анимации, значение - список кадров.</span>
+<span class="sd">        current_animation (str): Имя текущей анимации (например, &quot;бег&quot;).</span>
+<span class="sd">        animation_frame (int): Индекс текущего кадра анимации.</span>
+<span class="sd">        animation_timer (float): Таймер для смены кадров анимации.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Инициализация базового объекта.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): Координата X левого верхнего угла.</span>
+<span class="sd">            y (int): Координата Y левого верхнего угла.</span>
+<span class="sd">            width (int): Ширина объекта.</span>
+<span class="sd">            height (int): Высота объекта.</span>
+<span class="sd">            color (tuple, optional): Цвет объекта в формате RGB. </span>
+<span class="sd">                По умолчанию белый (255, 255, 255).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>  <span class="c1"># хранит геометрию объекта</span>
+        <span class="c1">#система координат начинается в верхнем левом углу экрана</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>  <span class="c1"># атрибут цвета, или по умолчанию белый</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>  <span class="c1"># ширина объекта</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>  <span class="c1"># высота объекта</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># для хранения спрайта в будущем</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># для хранения нескольких анимаций</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># какая анимация &quot;бег&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_frame</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># индекс анмации &quot;1&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># таймер для анимации</span>
+
+<div class="viewcode-block" id="BaseObject.load_sprite">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.load_sprite">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_sprite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sprite_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает спрайт из файла.</span>
+
+<span class="sd">        Используется для загрузки спрайта объекта.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sprite_path (str): Путь к файлу спрайта.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">sprite_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseObject.set_animation">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.set_animation">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_animation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">animation_name</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  <span class="c1"># изначальное True сброс анимации</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Устанавливает текущую анимацию.</span>
+
+<span class="sd">        Для проигрывания анимаций начиная с текущего.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            animation_name (str): Имя анимации для установки.</span>
+<span class="sd">            reset (bool, optional): Сбрасывать ли анимацию к началу.</span>
+<span class="sd">                По умолчанию True (сброс анимации).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">animation_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span>
+            <span class="n">animation_name</span><span class="p">]:</span>  <span class="c1"># если анимация есть имени анимаций и у нее есть хотябы 1 кадр</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="o">=</span> <span class="n">animation_name</span>  <span class="c1"># устанавливаем текущую анимацию</span>
+            <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>  <span class="c1"># если нужно сбросить анимауию. Всегда да.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">animation_frame</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># сбро на 1 индекс кадра анимации</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">animation_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># сброс таймера проигрывания анимации 1 кадра (то есть, чтобы 1 кадр анимации не сбрасывался сразу)</span></div>
+
+
+<div class="viewcode-block" id="BaseObject.update_animation">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.update_animation">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_animation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>  <span class="c1"># dt - время, прошедшее с прошлого кдра, обычно 0.016</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет анимацию объекта.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра, обычно 0.016 секунды.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animation_timer</span> <span class="o">+=</span> <span class="n">dt</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation_timer</span> <span class="o">&gt;=</span> <span class="mf">0.15</span><span class="p">:</span>  <span class="c1"># если текущий кадр показывался уже 0.15 секунды или больше</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">animation_timer</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">animation_frame</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">animation_frame</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span><span class="p">])</span></div>
+
+                <span class="c1"># self.animation_frame + 1 - увеличивыем индекс кадра - берем следующий кадр</span>
+                <span class="c1"># self.sprites[self.current_animation] - узнаем количество кадров в списке self.sprites[&quot;run&quot;] = [кадр1, кадр2], len = 2</span>
+                <span class="c1">## Для анимации с 2 кадрами:</span>
+                <span class="c1"># 0 % 2 = 0</span>
+                <span class="c1"># 1 % 2 = 1</span>
+                <span class="c1"># 2 % 2 = 0 - вернулись к началу</span>
+                <span class="c1"># (0 + 1) % 2 = 1 % 2 = 1</span>
+                <span class="c1"># ...</span>
+
+<div class="viewcode-block" id="BaseObject.draw">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.draw">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>  <span class="c1"># screen - поверхность, где рисуются объекты</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Отрисовывает объект на экране.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность, где рисуются объекты.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">:</span>  <span class="c1"># проверка есть ли анимация, и есть ли она в словаре</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span><span class="p">]</span>  <span class="c1"># получаем список кадров frames = self.sprites[&quot;run&quot;]  # = [кадр0, кадр1]</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">frames</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">animation_frame</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
+            <span class="c1"># bit - рисует одну картинку на другой</span>
+            <span class="c1"># рисует текущий кадр в self.rect</span>
+            <span class="c1"># self.rect.x, self.rect.y = координаты</span>
+            <span class="c1"># self.rect.width, self.rect.height = размеры</span>
+            <span class="c1"># frames[0]</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="p">:</span>  <span class="c1"># если у нас один спрайт, то рисуем его</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseObject.collides_with">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.collides_with">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">collides_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Проверка столкновения с другим объектом colliderect.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            other (BaseObject): Другой объект для проверки столкновения.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True если объекты пересекаются, False если нет.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span></div>
+
+        <span class="c1"># self.rect - текущий объект сталкивается с другим other.rect</span>
+
+<div class="viewcode-block" id="BaseObject.update">
+<a class="viewcode-back" href="../../game_module.html#game.base_object.BaseObject.update">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>  <span class="c1"># вызывает родительский метод update_animation для создания дочерних методов</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет состояние объекта.</span>
+<span class="sd">        Вызывает родительский метод update_animation для создания дочерних методов.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_animation</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

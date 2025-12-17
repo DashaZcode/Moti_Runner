@@ -1,0 +1,1193 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Модуль game &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=cd1d70c9"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="prev" title="Документация Moti Runner" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Модуль game</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#game.base_object.BaseObject"><code class="docutils literal notranslate"><span class="pre">BaseObject</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.rect"><code class="docutils literal notranslate"><span class="pre">BaseObject.rect</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.color"><code class="docutils literal notranslate"><span class="pre">BaseObject.color</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.width"><code class="docutils literal notranslate"><span class="pre">BaseObject.width</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.height"><code class="docutils literal notranslate"><span class="pre">BaseObject.height</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.sprite"><code class="docutils literal notranslate"><span class="pre">BaseObject.sprite</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.sprites"><code class="docutils literal notranslate"><span class="pre">BaseObject.sprites</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.current_animation"><code class="docutils literal notranslate"><span class="pre">BaseObject.current_animation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.animation_frame"><code class="docutils literal notranslate"><span class="pre">BaseObject.animation_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.animation_timer"><code class="docutils literal notranslate"><span class="pre">BaseObject.animation_timer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.collides_with"><code class="docutils literal notranslate"><span class="pre">BaseObject.collides_with()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.draw"><code class="docutils literal notranslate"><span class="pre">BaseObject.draw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.load_sprite"><code class="docutils literal notranslate"><span class="pre">BaseObject.load_sprite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.set_animation"><code class="docutils literal notranslate"><span class="pre">BaseObject.set_animation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.update"><code class="docutils literal notranslate"><span class="pre">BaseObject.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.base_object.BaseObject.update_animation"><code class="docutils literal notranslate"><span class="pre">BaseObject.update_animation()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.player.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.draw"><code class="docutils literal notranslate"><span class="pre">Player.draw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.jump"><code class="docutils literal notranslate"><span class="pre">Player.jump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.load_player_sprites"><code class="docutils literal notranslate"><span class="pre">Player.load_player_sprites()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.reset"><code class="docutils literal notranslate"><span class="pre">Player.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.update"><code class="docutils literal notranslate"><span class="pre">Player.update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.player.Player.update_invulnerability"><code class="docutils literal notranslate"><span class="pre">Player.update_invulnerability()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.obstacle.Obstacle"><code class="docutils literal notranslate"><span class="pre">Obstacle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.speed"><code class="docutils literal notranslate"><span class="pre">Obstacle.speed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.passed"><code class="docutils literal notranslate"><span class="pre">Obstacle.passed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.obstacle_type"><code class="docutils literal notranslate"><span class="pre">Obstacle.obstacle_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.is_flying"><code class="docutils literal notranslate"><span class="pre">Obstacle.is_flying</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.collides_with"><code class="docutils literal notranslate"><span class="pre">Obstacle.collides_with()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.create_random"><code class="docutils literal notranslate"><span class="pre">Obstacle.create_random()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.draw"><code class="docutils literal notranslate"><span class="pre">Obstacle.draw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.is_offscreen"><code class="docutils literal notranslate"><span class="pre">Obstacle.is_offscreen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.load_obstacle_sprite"><code class="docutils literal notranslate"><span class="pre">Obstacle.load_obstacle_sprite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.obstacle.Obstacle.update"><code class="docutils literal notranslate"><span class="pre">Obstacle.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.game_manager.GameManager"><code class="docutils literal notranslate"><span class="pre">GameManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.screen_width"><code class="docutils literal notranslate"><span class="pre">GameManager.screen_width</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.screen_height"><code class="docutils literal notranslate"><span class="pre">GameManager.screen_height</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.ground_y"><code class="docutils literal notranslate"><span class="pre">GameManager.ground_y</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.background_sprites"><code class="docutils literal notranslate"><span class="pre">GameManager.background_sprites</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.sound_manager"><code class="docutils literal notranslate"><span class="pre">GameManager.sound_manager</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.player"><code class="docutils literal notranslate"><span class="pre">GameManager.player</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.obstacles"><code class="docutils literal notranslate"><span class="pre">GameManager.obstacles</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.clouds"><code class="docutils literal notranslate"><span class="pre">GameManager.clouds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.score"><code class="docutils literal notranslate"><span class="pre">GameManager.score</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.lives"><code class="docutils literal notranslate"><span class="pre">GameManager.lives</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.game_speed"><code class="docutils literal notranslate"><span class="pre">GameManager.game_speed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.game_over"><code class="docutils literal notranslate"><span class="pre">GameManager.game_over</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.is_paused"><code class="docutils literal notranslate"><span class="pre">GameManager.is_paused</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.create_initial_clouds"><code class="docutils literal notranslate"><span class="pre">GameManager.create_initial_clouds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.draw"><code class="docutils literal notranslate"><span class="pre">GameManager.draw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.draw_background"><code class="docutils literal notranslate"><span class="pre">GameManager.draw_background()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.draw_game_over"><code class="docutils literal notranslate"><span class="pre">GameManager.draw_game_over()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.draw_hud"><code class="docutils literal notranslate"><span class="pre">GameManager.draw_hud()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.draw_pause_menu"><code class="docutils literal notranslate"><span class="pre">GameManager.draw_pause_menu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.get_game_result"><code class="docutils literal notranslate"><span class="pre">GameManager.get_game_result()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.handle_events"><code class="docutils literal notranslate"><span class="pre">GameManager.handle_events()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.load_background_sprites"><code class="docutils literal notranslate"><span class="pre">GameManager.load_background_sprites()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.load_ui_sprites"><code class="docutils literal notranslate"><span class="pre">GameManager.load_ui_sprites()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.reset_game"><code class="docutils literal notranslate"><span class="pre">GameManager.reset_game()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.toggle_pause"><code class="docutils literal notranslate"><span class="pre">GameManager.toggle_pause()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.game_manager.GameManager.update"><code class="docutils literal notranslate"><span class="pre">GameManager.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.sprite_loader.SpriteLoader"><code class="docutils literal notranslate"><span class="pre">SpriteLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.sprite_loader.SpriteLoader.flip_sprites"><code class="docutils literal notranslate"><span class="pre">SpriteLoader.flip_sprites()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sprite_loader.SpriteLoader.get_assets_path"><code class="docutils literal notranslate"><span class="pre">SpriteLoader.get_assets_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sprite_loader.SpriteLoader.load_sprite"><code class="docutils literal notranslate"><span class="pre">SpriteLoader.load_sprite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.sound_manager.SoundManager"><code class="docutils literal notranslate"><span class="pre">SoundManager</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.sounds"><code class="docutils literal notranslate"><span class="pre">SoundManager.sounds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.music_playing"><code class="docutils literal notranslate"><span class="pre">SoundManager.music_playing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.sound_enabled"><code class="docutils literal notranslate"><span class="pre">SoundManager.sound_enabled</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.music_enabled"><code class="docutils literal notranslate"><span class="pre">SoundManager.music_enabled</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.volume"><code class="docutils literal notranslate"><span class="pre">SoundManager.volume</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.load_sounds"><code class="docutils literal notranslate"><span class="pre">SoundManager.load_sounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.play_music"><code class="docutils literal notranslate"><span class="pre">SoundManager.play_music()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.play_sound"><code class="docutils literal notranslate"><span class="pre">SoundManager.play_sound()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.preload"><code class="docutils literal notranslate"><span class="pre">SoundManager.preload()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.set_volume"><code class="docutils literal notranslate"><span class="pre">SoundManager.set_volume()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.stop_music"><code class="docutils literal notranslate"><span class="pre">SoundManager.stop_music()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.toggle_music"><code class="docutils literal notranslate"><span class="pre">SoundManager.toggle_music()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game.sound_manager.SoundManager.toggle_sound"><code class="docutils literal notranslate"><span class="pre">SoundManager.toggle_sound()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#game.database.clear_all_scores"><code class="docutils literal notranslate"><span class="pre">clear_all_scores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.database.get_all_scores"><code class="docutils literal notranslate"><span class="pre">get_all_scores()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#game.database.save_score"><code class="docutils literal notranslate"><span class="pre">save_score()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Модуль game</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/game_module.rst.txt" rel="nofollow"> Просмотреть исходный код страницы</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-game.base_object">
+<span id="game"></span><h1>Модуль game<a class="headerlink" href="#module-game.base_object" title="Ссылка на этот заголовок"></a></h1>
+<p>Модуль base_object - базовый класс для всех игровых объектов.</p>
+<p>Содержит класс BaseObject, который предоставляет общую функциональность
+для всех игровых объектов: геометрию, анимации, коллизии и отрисовку.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.base_object.BaseObject">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.base_object.</span></span><span class="sig-name descname"><span class="pre">BaseObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Базовый класс для всех игровых объектов.</p>
+<p>Предоставляет общую функциональность для игровых объектов:
+- Геометрию и позиционирование
+- Анимации и спрайты
+- Коллизии
+- Отрисовку</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.rect">
+<span class="sig-name descname"><span class="pre">rect</span></span><a class="headerlink" href="#game.base_object.BaseObject.rect" title="Ссылка на это определение"></a></dt>
+<dd><p>Прямоугольник, хранящий геометрию объекта.
+Система координат начинается в верхнем левом углу экрана.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pygame.Rect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#game.base_object.BaseObject.color" title="Ссылка на это определение"></a></dt>
+<dd><p>Цвет объекта в формате RGB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#game.base_object.BaseObject.width" title="Ссылка на это определение"></a></dt>
+<dd><p>Ширина объекта в пикселях.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.height">
+<span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#game.base_object.BaseObject.height" title="Ссылка на это определение"></a></dt>
+<dd><p>Высота объекта в пикселях.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.sprite">
+<span class="sig-name descname"><span class="pre">sprite</span></span><a class="headerlink" href="#game.base_object.BaseObject.sprite" title="Ссылка на это определение"></a></dt>
+<dd><p>Текущий спрайт объекта.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pygame.Surface</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.sprites">
+<span class="sig-name descname"><span class="pre">sprites</span></span><a class="headerlink" href="#game.base_object.BaseObject.sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Словарь для хранения нескольких анимаций.
+Ключ - имя анимации, значение - список кадров.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.current_animation">
+<span class="sig-name descname"><span class="pre">current_animation</span></span><a class="headerlink" href="#game.base_object.BaseObject.current_animation" title="Ссылка на это определение"></a></dt>
+<dd><p>Имя текущей анимации (например, «бег»).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.animation_frame">
+<span class="sig-name descname"><span class="pre">animation_frame</span></span><a class="headerlink" href="#game.base_object.BaseObject.animation_frame" title="Ссылка на это определение"></a></dt>
+<dd><p>Индекс текущего кадра анимации.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.animation_timer">
+<span class="sig-name descname"><span class="pre">animation_timer</span></span><a class="headerlink" href="#game.base_object.BaseObject.animation_timer" title="Ссылка на это определение"></a></dt>
+<dd><p>Таймер для смены кадров анимации.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.collides_with">
+<span class="sig-name descname"><span class="pre">collides_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.collides_with"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.collides_with" title="Ссылка на это определение"></a></dt>
+<dd><p>Проверка столкновения с другим объектом colliderect.
+:param other: Другой объект для проверки столкновения.
+:type other: BaseObject</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True если объекты пересекаются, False если нет.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.draw"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.draw" title="Ссылка на это определение"></a></dt>
+<dd><p>Отрисовывает объект на экране.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность, где рисуются объекты.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.load_sprite">
+<span class="sig-name descname"><span class="pre">load_sprite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sprite_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.load_sprite"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.load_sprite" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает спрайт из файла.</p>
+<p>Используется для загрузки спрайта объекта.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sprite_path</strong> (<em>str</em>) – Путь к файлу спрайта.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.set_animation">
+<span class="sig-name descname"><span class="pre">set_animation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">animation_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.set_animation"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.set_animation" title="Ссылка на это определение"></a></dt>
+<dd><p>Устанавливает текущую анимацию.</p>
+<p>Для проигрывания анимаций начиная с текущего.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>animation_name</strong> (<em>str</em>) – Имя анимации для установки.</p></li>
+<li><p><strong>reset</strong> (<em>bool</em><em>, </em><em>optional</em>) – Сбрасывать ли анимацию к началу.
+По умолчанию True (сброс анимации).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.update"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.update" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет состояние объекта.
+Вызывает родительский метод update_animation для создания дочерних методов.
+:param dt: Время, прошедшее с прошлого кадра.
+:type dt: float</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.base_object.BaseObject.update_animation">
+<span class="sig-name descname"><span class="pre">update_animation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/base_object.html#BaseObject.update_animation"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.base_object.BaseObject.update_animation" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет анимацию объекта.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>float</em>) – Время, прошедшее с прошлого кадра, обычно 0.016 секунды.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.player">Модуль player - класс игрока, управляемого пользователем.</p>
+<p>Содержит класс Player с реализацией физики прыжка, неуязвимости,
+анимаций и управления для главного персонажа игры.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.player.Player">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.player.</span></span><span class="sig-name descname"><span class="pre">Player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <a class="reference internal" href="#game.base_object.BaseObject" title="game.base_object.BaseObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseObject</span></code></a></p>
+<p>Класс игрока, управляемого пользователем.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.draw"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.draw" title="Ссылка на это определение"></a></dt>
+<dd><p>Отрисовывает игрока с учетом неуязвимости.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.jump">
+<span class="sig-name descname"><span class="pre">jump</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.jump"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.jump" title="Ссылка на это определение"></a></dt>
+<dd><p>Выполняет прыжок игрока.</p>
+<p>Условия для прыжка:
+1. Игрок не в прыжке
+2. Игрок не в состоянии неуязвимости</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.load_player_sprites">
+<span class="sig-name descname"><span class="pre">load_player_sprites</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.load_player_sprites"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.load_player_sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Загрузка всех спрайтов игрока</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.reset"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.reset" title="Ссылка на это определение"></a></dt>
+<dd><p>Сброс состояния игрока</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.update"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.update" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет физику игрока.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>float</em>) – Время, прошедшее с прошлого кадра.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.player.Player.update_invulnerability">
+<span class="sig-name descname"><span class="pre">update_invulnerability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/player.html#Player.update_invulnerability"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.player.Player.update_invulnerability" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет состояние неуязвимости игрока.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>float</em>) – Время, прошедшее с прошлого кадра.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.obstacle">Модуль obstacle - классы препятствий для игры.</p>
+<p>Содержит класс Obstacle, представляющий различные типы препятствий
+(летающие и наземные), с функциональностью для случайной генерации
+и специальных хитбоксов.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.obstacle.</span></span><span class="sig-name descname"><span class="pre">Obstacle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(200,</span> <span class="pre">50,</span> <span class="pre">50)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obstacle_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <a class="reference internal" href="#game.base_object.BaseObject" title="game.base_object.BaseObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseObject</span></code></a></p>
+<p>Класс препятствий для игры Moti Runner.</p>
+<p>Наследуется от BaseObject и добавляет специфичную для препятствий функциональность:
+- Движение слева направо
+- Разные типы препятствий (летающие и наземные)
+- Случайную генерацию
+- Специальные хитбоксы для разных типов препятствий</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.speed">
+<span class="sig-name descname"><span class="pre">speed</span></span><a class="headerlink" href="#game.obstacle.Obstacle.speed" title="Ссылка на это определение"></a></dt>
+<dd><p>Скорость движения препятствий влево.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.passed">
+<span class="sig-name descname"><span class="pre">passed</span></span><a class="headerlink" href="#game.obstacle.Obstacle.passed" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг пройденых препятствий. True - игрок получил очко после прохождения препятствия.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.obstacle_type">
+<span class="sig-name descname"><span class="pre">obstacle_type</span></span><a class="headerlink" href="#game.obstacle.Obstacle.obstacle_type" title="Ссылка на это определение"></a></dt>
+<dd><p>Тип препятствия. Может быть „bird“ для птиц или None для наземных.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.is_flying">
+<span class="sig-name descname"><span class="pre">is_flying</span></span><a class="headerlink" href="#game.obstacle.Obstacle.is_flying" title="Ссылка на это определение"></a></dt>
+<dd><p>True если это птица, False если наземное препятствие.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.collides_with">
+<span class="sig-name descname"><span class="pre">collides_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.collides_with"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.collides_with" title="Ссылка на это определение"></a></dt>
+<dd><p>Проверка столкновения с другим объектом.</p>
+<p>Создает разные хитбоксы для разных типов препятствий.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#game.base_object.BaseObject" title="game.base_object.BaseObject"><em>BaseObject</em></a>) – Другой объект для проверки столкновения.</p>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>True если объекты пересекаются с учетом хитбокса.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Заметки</p>
+<ul class="simple">
+<li><p>Для птиц: уменьшенный хитбокс (-25, -25)</p></li>
+<li><p>Для наземных препятствий: уменьшенный и смещенный вниз хитбокс</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.create_random">
+<span class="sig-name descname"><span class="pre">create_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.create_random"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.create_random" title="Ссылка на это определение"></a></dt>
+<dd><p>Создает случайное препятствие.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>screen_width</strong> (<em>int</em>) – Заданная ширина экрана пользователем.</p></li>
+<li><p><strong>ground_y</strong> (<em>int</em>) – Расположение земли (координата Y уровня земли).</p></li>
+<li><p><strong>speed</strong> (<em>int</em>) – Скорость движения препятствия.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Новый объект препятствия со случайными параметрами.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#game.obstacle.Obstacle" title="game.obstacle.Obstacle">Obstacle</a></p>
+</dd>
+</dl>
+<p class="rubric">Заметки</p>
+<ul class="simple">
+<li><p>40% шанс на птицу</p></li>
+<li><p>Птицы появляются в воздухе на случайной высоте</p></li>
+<li><p>Наземные препятствия (кости) появляются на уровне земли</p></li>
+<li><p>Препятствие создается за правым краем экрана</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.draw"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.draw" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует препятствие на экране.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Игровое окно, на котором рисуем.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.is_offscreen">
+<span class="sig-name descname"><span class="pre">is_offscreen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.is_offscreen"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.is_offscreen" title="Ссылка на это определение"></a></dt>
+<dd><p>Проверяет, вышло ли препятствие за левую границу экрана.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True если препятствие полностью вышло за левый край экрана.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Если объект позиция меньше чем позиция за границой (-), то значит объект вышел за границу.
+50px - справа, -50px слева</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.load_obstacle_sprite">
+<span class="sig-name descname"><span class="pre">load_obstacle_sprite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.load_obstacle_sprite"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.load_obstacle_sprite" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает спрайт препятствия из файла.</p>
+<p>Ищет файлы в папке assets/obstacles и загружает соответствующий спрайт.
+Для птиц использует файл bird.png, для других препятствий выбирает случайный файл.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.obstacle.Obstacle.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/obstacle.html#Obstacle.update"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.obstacle.Obstacle.update" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет позицию препятствия.</p>
+<p>Движение препятствий влево.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>float</em>) – Время, прошедшее с прошлого кадра.</p>
+</dd>
+</dl>
+<p class="rubric">Пример</p>
+<p>self.rect.x = 1250 за гарницей, speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px
+За один кадр препятствие сдвинется на 4.8 пикселя влево</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.game_manager">Модуль game_manager - основной менеджер игры.</p>
+<p>Содержит класс GameManager, который управляет всей игровой логикой,
+объектами, событиями и отрисовкой, координируя работу всех компонентов.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.game_manager.GameManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.game_manager.</span></span><span class="sig-name descname"><span class="pre">GameManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">screen_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Основной менеджер игры, управляющий логикой, объектами и отрисовкой.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.screen_width">
+<span class="sig-name descname"><span class="pre">screen_width</span></span><a class="headerlink" href="#game.game_manager.GameManager.screen_width" title="Ссылка на это определение"></a></dt>
+<dd><p>Ширина игрового окна.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.screen_height">
+<span class="sig-name descname"><span class="pre">screen_height</span></span><a class="headerlink" href="#game.game_manager.GameManager.screen_height" title="Ссылка на это определение"></a></dt>
+<dd><p>Высота игрового окна.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.ground_y">
+<span class="sig-name descname"><span class="pre">ground_y</span></span><a class="headerlink" href="#game.game_manager.GameManager.ground_y" title="Ссылка на это определение"></a></dt>
+<dd><p>Координата Y уровня земли.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.background_sprites">
+<span class="sig-name descname"><span class="pre">background_sprites</span></span><a class="headerlink" href="#game.game_manager.GameManager.background_sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Загруженные фоновые спрайты.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.sound_manager">
+<span class="sig-name descname"><span class="pre">sound_manager</span></span><a class="headerlink" href="#game.game_manager.GameManager.sound_manager" title="Ссылка на это определение"></a></dt>
+<dd><p>Менеджер звуков.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#game.sound_manager.SoundManager" title="game.sound_manager.SoundManager">SoundManager</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.player">
+<span class="sig-name descname"><span class="pre">player</span></span><a class="headerlink" href="#game.game_manager.GameManager.player" title="Ссылка на это определение"></a></dt>
+<dd><p>Объект игрока.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#game.player.Player" title="game.player.Player">Player</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.obstacles">
+<span class="sig-name descname"><span class="pre">obstacles</span></span><a class="headerlink" href="#game.game_manager.GameManager.obstacles" title="Ссылка на это определение"></a></dt>
+<dd><p>Список активных препятствий.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.clouds">
+<span class="sig-name descname"><span class="pre">clouds</span></span><a class="headerlink" href="#game.game_manager.GameManager.clouds" title="Ссылка на это определение"></a></dt>
+<dd><p>Список облаков.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.score">
+<span class="sig-name descname"><span class="pre">score</span></span><a class="headerlink" href="#game.game_manager.GameManager.score" title="Ссылка на это определение"></a></dt>
+<dd><p>Текущий счет игрока.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.lives">
+<span class="sig-name descname"><span class="pre">lives</span></span><a class="headerlink" href="#game.game_manager.GameManager.lives" title="Ссылка на это определение"></a></dt>
+<dd><p>Количество жизней.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.game_speed">
+<span class="sig-name descname"><span class="pre">game_speed</span></span><a class="headerlink" href="#game.game_manager.GameManager.game_speed" title="Ссылка на это определение"></a></dt>
+<dd><p>Текущая скорость игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.game_over">
+<span class="sig-name descname"><span class="pre">game_over</span></span><a class="headerlink" href="#game.game_manager.GameManager.game_over" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг завершения игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.is_paused">
+<span class="sig-name descname"><span class="pre">is_paused</span></span><a class="headerlink" href="#game.game_manager.GameManager.is_paused" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг паузы.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.create_initial_clouds">
+<span class="sig-name descname"><span class="pre">create_initial_clouds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.create_initial_clouds"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.create_initial_clouds" title="Ссылка на это определение"></a></dt>
+<dd><p>Создает начальные облака со случайными параметрами.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.draw"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.draw" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует всю игру на экране.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.draw_background">
+<span class="sig-name descname"><span class="pre">draw_background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.draw_background"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.draw_background" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует фон игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.draw_game_over">
+<span class="sig-name descname"><span class="pre">draw_game_over</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.draw_game_over"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.draw_game_over" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует экран завершения игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.draw_hud">
+<span class="sig-name descname"><span class="pre">draw_hud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.draw_hud"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.draw_hud" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует интерфейс пользователя (счет, жизни, управление).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.draw_pause_menu">
+<span class="sig-name descname"><span class="pre">draw_pause_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.draw_pause_menu"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.draw_pause_menu" title="Ссылка на это определение"></a></dt>
+<dd><p>Рисует меню паузы.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>screen</strong> (<em>pygame.Surface</em>) – Поверхность для отрисовки.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.get_game_result">
+<span class="sig-name descname"><span class="pre">get_game_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.get_game_result"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.get_game_result" title="Ссылка на это определение"></a></dt>
+<dd><p>Возвращает результаты игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Словарь с результатами игры.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.handle_events">
+<span class="sig-name descname"><span class="pre">handle_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.handle_events"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.handle_events" title="Ссылка на это определение"></a></dt>
+<dd><p>Обрабатывает события игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False если нужно выйти из игры, иначе True.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.load_background_sprites">
+<span class="sig-name descname"><span class="pre">load_background_sprites</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.load_background_sprites"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.load_background_sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает фоновые спрайты из папки assets/background.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Словарь с загруженными спрайтами.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.load_ui_sprites">
+<span class="sig-name descname"><span class="pre">load_ui_sprites</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.load_ui_sprites"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.load_ui_sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает UI спрайты из папки assets/ui.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Словарь с загруженными UI спрайтами.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.reset_game">
+<span class="sig-name descname"><span class="pre">reset_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.reset_game"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.reset_game" title="Ссылка на это определение"></a></dt>
+<dd><p>Сбрасывает игру к начальному состоянию.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.toggle_pause">
+<span class="sig-name descname"><span class="pre">toggle_pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.toggle_pause"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.toggle_pause" title="Ссылка на это определение"></a></dt>
+<dd><p>Переключает состояние паузы игры.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.game_manager.GameManager.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/game_manager.html#GameManager.update"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.game_manager.GameManager.update" title="Ссылка на это определение"></a></dt>
+<dd><p>Обновляет состояние игры.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>float</em>) – Время, прошедшее с прошлого кадра.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.sprite_loader">Модуль sprite_loader - загрузчик и обработчик спрайтов.</p>
+<p>Содержит класс SpriteLoader со статическими методами для загрузки,
+масштабирования и преобразования спрайтов из файлов.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.sprite_loader.SpriteLoader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.sprite_loader.</span></span><span class="sig-name descname"><span class="pre">SpriteLoader</span></span><a class="reference internal" href="_modules/game/sprite_loader.html#SpriteLoader"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sprite_loader.SpriteLoader" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Загрузчик и обработчик спрайтов для игры.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sprite_loader.SpriteLoader.flip_sprites">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flip_sprites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sprites</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sprite_loader.html#SpriteLoader.flip_sprites"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sprite_loader.SpriteLoader.flip_sprites" title="Ссылка на это определение"></a></dt>
+<dd><p>Отражает спрайты по горизонтали и/или вертикали.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sprites</strong> (<em>list</em>) – Список спрайтов для отражения.</p></li>
+<li><p><strong>flip_x</strong> (<em>bool</em>) – Отразить по горизонтали.</p></li>
+<li><p><strong>flip_y</strong> (<em>bool</em>) – Отразить по вертикали.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Список отраженных спрайтов.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sprite_loader.SpriteLoader.get_assets_path">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_assets_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sprite_loader.html#SpriteLoader.get_assets_path"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sprite_loader.SpriteLoader.get_assets_path" title="Ссылка на это определение"></a></dt>
+<dd><p>Возвращает путь к папке assets относительно текущего файла.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Абсолютный путь к папке assets.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sprite_loader.SpriteLoader.load_sprite">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_sprite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sprite_loader.html#SpriteLoader.load_sprite"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sprite_loader.SpriteLoader.load_sprite" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает и подготавливает спрайт из файла.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Путь к файлу изображения.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – Новая ширина спрайта.</p></li>
+<li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – Новая высота спрайта.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>Загруженный и обработанный спрайт.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pygame.Surface</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.sound_manager">Модуль sound_manager - менеджер звуков и музыки.</p>
+<p>Содержит класс SoundManager для управления звуковыми эффектами,
+фоновой музыкой и настройками громкости в игре.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">game.sound_manager.</span></span><span class="sig-name descname"><span class="pre">SoundManager</span></span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager" title="Ссылка на это определение"></a></dt>
+<dd><p>Базовые классы: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Менеджер звуков для игры.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.sounds">
+<span class="sig-name descname"><span class="pre">sounds</span></span><a class="headerlink" href="#game.sound_manager.SoundManager.sounds" title="Ссылка на это определение"></a></dt>
+<dd><p>Словарь для хранения загруженных звуковых эффектов.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.music_playing">
+<span class="sig-name descname"><span class="pre">music_playing</span></span><a class="headerlink" href="#game.sound_manager.SoundManager.music_playing" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг: играет ли фоновая музыка сейчас.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.sound_enabled">
+<span class="sig-name descname"><span class="pre">sound_enabled</span></span><a class="headerlink" href="#game.sound_manager.SoundManager.sound_enabled" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг: включены ли звуковые эффекты.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.music_enabled">
+<span class="sig-name descname"><span class="pre">music_enabled</span></span><a class="headerlink" href="#game.sound_manager.SoundManager.music_enabled" title="Ссылка на это определение"></a></dt>
+<dd><p>Флаг: включена ли фоновая музыка.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#game.sound_manager.SoundManager.volume" title="Ссылка на это определение"></a></dt>
+<dd><p>Общая громкость от 0.0 (тихо) до 1.0 (максимум).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.load_sounds">
+<span class="sig-name descname"><span class="pre">load_sounds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.load_sounds"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.load_sounds" title="Ссылка на это определение"></a></dt>
+<dd><p>Загружает звуки из папки assets/sounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True если хотя бы один звук был загружен, иначе False.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.play_music">
+<span class="sig-name descname"><span class="pre">play_music</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.play_music"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.play_music" title="Ссылка на это определение"></a></dt>
+<dd><p>Воспроизводит фоновую музыку.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loop</strong> (<em>int</em>) – Количество повторений (-1 для бесконечного).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.play_sound">
+<span class="sig-name descname"><span class="pre">play_sound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.play_sound"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.play_sound" title="Ссылка на это определение"></a></dt>
+<dd><p>Воспроизводит звуковой эффект.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Имя звукового эффекта.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.preload">
+<span class="sig-name descname"><span class="pre">preload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.preload"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.preload" title="Ссылка на это определение"></a></dt>
+<dd><p>Инициализирует звуковую систему и загружает звуки.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True если инициализация успешна, иначе False.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.set_volume">
+<span class="sig-name descname"><span class="pre">set_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.set_volume"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.set_volume" title="Ссылка на это определение"></a></dt>
+<dd><p>Устанавливает общую громкость.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> (<em>float</em>) – Громкость от 0.0 до 1.0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.stop_music">
+<span class="sig-name descname"><span class="pre">stop_music</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.stop_music"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.stop_music" title="Ссылка на это определение"></a></dt>
+<dd><p>Остановка музыки</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.toggle_music">
+<span class="sig-name descname"><span class="pre">toggle_music</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.toggle_music"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.toggle_music" title="Ссылка на это определение"></a></dt>
+<dd><p>Переключает фоновую музыку.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Новое состояние музыки.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="game.sound_manager.SoundManager.toggle_sound">
+<span class="sig-name descname"><span class="pre">toggle_sound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/sound_manager.html#SoundManager.toggle_sound"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.sound_manager.SoundManager.toggle_sound" title="Ссылка на это определение"></a></dt>
+<dd><p>Переключает звуковые эффекты.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Новое состояние звуковых эффектов.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-game.database">Модуль database - работа с базой данных результатов.</p>
+<p>Содержит функции для сохранения, получения и очистки результатов игры
+в PostgreSQL базе данных.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="game.database.clear_all_scores">
+<span class="sig-prename descclassname"><span class="pre">game.database.</span></span><span class="sig-name descname"><span class="pre">clear_all_scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/database.html#clear_all_scores"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.database.clear_all_scores" title="Ссылка на это определение"></a></dt>
+<dd><p>Очищает все записи из таблицы результатов.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True если очистка успешна, иначе False.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="game.database.get_all_scores">
+<span class="sig-prename descclassname"><span class="pre">game.database.</span></span><span class="sig-name descname"><span class="pre">get_all_scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/database.html#get_all_scores"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.database.get_all_scores" title="Ссылка на это определение"></a></dt>
+<dd><p>Получает все результаты из базы данных, отсортированные по убыванию.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Результат<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Список кортежей (name, score) с результатами.</p>
+</dd>
+<dt class="field-even">Тип результата<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="game.database.save_score">
+<span class="sig-prename descclassname"><span class="pre">game.database.</span></span><span class="sig-name descname"><span class="pre">save_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/game/database.html#save_score"><span class="viewcode-link"><span class="pre">[исходный</span> <span class="pre">код]</span></span></a><a class="headerlink" href="#game.database.save_score" title="Ссылка на это определение"></a></dt>
+<dd><p>Сохраняет результат игры в базу данных.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Параметры<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Имя игрока.</p></li>
+<li><p><strong>score</strong> (<em>int</em>) – Количество очков.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Результат<span class="colon">:</span></dt>
+<dd class="field-even"><p>True если сохранение успешно, иначе False.</p>
+</dd>
+<dt class="field-odd">Тип результата<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="index.html" class="btn btn-neutral float-left" title="Документация Moti Runner" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

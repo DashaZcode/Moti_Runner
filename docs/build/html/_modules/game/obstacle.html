@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.obstacle &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.obstacle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.obstacle</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль obstacle - классы препятствий для игры.</span>
+
+<span class="sd">Содержит класс Obstacle, представляющий различные типы препятствий</span>
+<span class="sd">(летающие и наземные), с функциональностью для случайной генерации</span>
+<span class="sd">и специальных хитбоксов.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sprite_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpriteLoader</span>
+
+<div class="viewcode-block" id="Obstacle">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Obstacle</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Класс препятствий для игры Moti Runner.</span>
+
+<span class="sd">    Наследуется от BaseObject и добавляет специфичную для препятствий функциональность:</span>
+<span class="sd">    - Движение слева направо</span>
+<span class="sd">    - Разные типы препятствий (летающие и наземные)</span>
+<span class="sd">    - Случайную генерацию</span>
+<span class="sd">    - Специальные хитбоксы для разных типов препятствий</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        speed (int): Скорость движения препятствий влево.</span>
+<span class="sd">        passed (bool): Флаг пройденых препятствий. True - игрок получил очко после прохождения препятствия.</span>
+<span class="sd">        obstacle_type (str): Тип препятствия. Может быть &#39;bird&#39; для птиц или None для наземных.</span>
+<span class="sd">        is_flying (bool): True если это птица, False если наземное препятствие.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">speed</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">obstacle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Инициализация препятствия.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): Координата X левого верхнего угла.</span>
+<span class="sd">            y (int): Координата Y левого верхнего угла.</span>
+<span class="sd">            width (int, optional): Ширина препятствия. По умолчанию 60.</span>
+<span class="sd">            height (int, optional): Высота препятствия. По умолчанию 80.</span>
+<span class="sd">            color (tuple, optional): Цвет препятствия в формате RGB.</span>
+<span class="sd">                По умолчанию (200, 50, 50).</span>
+<span class="sd">            speed (int, optional): Скорость движения препятствий влево.</span>
+<span class="sd">                По умолчанию 300.</span>
+<span class="sd">            obstacle_type (str, optional): Тип препятствия. Может быть &#39;bird&#39; или None.</span>
+<span class="sd">                По умолчанию None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="c1">#унаследовал атрибуты и методы с родительского класса BaseObject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span> <span class="c1">#скорость движения препятствий влево</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passed</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#флаг пройденых препятсвий True - получает очко после прохождения препятсвия</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_type</span> <span class="o">=</span> <span class="n">obstacle_type</span> <span class="c1">#обработка препятсивй птица ЛЕТИТ, кость СТОИТ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_flying</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#True если это птица, False если наземное препятствие</span>
+
+        <span class="c1">#загружает картинку препятствия из файла и сохраняет в self.sprite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_obstacle_sprite</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Obstacle.load_obstacle_sprite">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.load_obstacle_sprite">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_obstacle_sprite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает спрайт препятствия из файла.</span>
+
+<span class="sd">        Ищет файлы в папке assets/obstacles и загружает соответствующий спрайт.</span>
+<span class="sd">        Для птиц использует файл bird.png, для других препятствий выбирает случайный файл.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">assets_path</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">get_assets_path</span><span class="p">()</span> <span class="c1">#получаем путь к папке assets</span>
+        <span class="n">obstacles_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">assets_path</span><span class="p">,</span> <span class="s1">&#39;obstacles&#39;</span><span class="p">)</span> <span class="c1">#объединяем путь к папке с перепятсвиями &quot;C:\projects\moti_runner\assets\obstacles&quot;</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">obstacles_path</span><span class="p">):</span> <span class="c1">#есть ли путь к файлу</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_type</span> <span class="o">==</span> <span class="s1">&#39;bird&#39;</span><span class="p">:</span>
+                <span class="n">sprite_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obstacles_path</span><span class="p">,</span> <span class="s2">&quot;bird.png&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sprite_file</span><span class="p">):</span>
+                    <span class="n">sprite</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">sprite_file</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">sprite</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span> <span class="o">=</span> <span class="n">sprite</span> <span class="c1">#загрузили картинку</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">is_flying</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#летающая птица</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="c1">#возвращает ширину спрайта в пикселях</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="c1">#высоту</span>
+                        <span class="k">return</span>
+
+            <span class="c1">#!!! другие объекты!!!</span>
+            <span class="n">all_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">obstacles_path</span><span class="p">)</span> <span class="c1">#загружаем спрайты</span>
+            <span class="n">sprite_files</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#создаем список не для спрайтов птицы</span>
+
+            <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">all_files</span><span class="p">:</span> <span class="c1">#если спрайт не птрицы, добавляем его в список</span>
+                <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;bird.png&#39;</span><span class="p">:</span>
+                    <span class="n">sprite_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">sprite_files</span><span class="p">:</span>
+                <span class="n">sprite_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obstacles_path</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">sprite_files</span><span class="p">))</span> <span class="c1">#рандомизируем появление объекта</span>
+                <span class="n">sprite</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">sprite_file</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sprite</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span> <span class="o">=</span> <span class="n">sprite</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Obstacle.create_random">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.create_random">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_random</span><span class="p">(</span><span class="n">screen_width</span><span class="p">,</span> <span class="n">ground_y</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+        <span class="c1">#screen_width - заданная ширина экрана пользователем</span>
+        <span class="c1">#ground_y расположение земли</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Создает случайное препятствие.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen_width (int): Заданная ширина экрана пользователем.</span>
+<span class="sd">            ground_y (int): Расположение земли (координата Y уровня земли).</span>
+<span class="sd">            speed (int): Скорость движения препятствия.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Obstacle: Новый объект препятствия со случайными параметрами.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            - 40% шанс на птицу</span>
+<span class="sd">            - Птицы появляются в воздухе на случайной высоте</span>
+<span class="sd">            - Наземные препятствия (кости) появляются на уровне земли</span>
+<span class="sd">            - Препятствие создается за правым краем экрана</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#определяем тип препятствия (40% шанс на птицу)</span>
+        <span class="n">is_bird</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.40</span>
+
+        <span class="k">if</span> <span class="n">is_bird</span><span class="p">:</span>
+            <span class="c1">#если птица</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="mi">60</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="mi">40</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">ground_y</span> <span class="o">-</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span> <span class="c1">#задаем на оси y, на какой высоте она будет появлятся</span>
+            <span class="n">obstacle_type</span> <span class="o">=</span> <span class="s1">&#39;bird&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#кость на земле</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">170</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">170</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">ground_y</span> <span class="o">-</span> <span class="mi">10</span>
+            <span class="n">obstacle_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">screen_width</span> <span class="o">+</span> <span class="n">width</span>
+        <span class="c1">#screen_width=1200, width=50 -&gt; x=1250</span>
+        <span class="c1">#gрепятствие появится на 1250px 50px за правым краем экрана 1200px</span>
+
+        <span class="k">return</span> <span class="n">Obstacle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">obstacle_type</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Obstacle.update">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.update">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="c1">#движение препятсвий влево</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет позицию препятствия.</span>
+
+<span class="sd">        Движение препятствий влево.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            self.rect.x = 1250 за гарницей, speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px</span>
+<span class="sd">            За один кадр препятствие сдвинется на 4.8 пикселя влево</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">*</span> <span class="n">dt</span></div>
+
+    <span class="c1">#self.rect.x = 1250 за гарницей, speed=300px/сек, dt=0.016сек - 300 * 0.016 = 4.8px</span>
+    <span class="c1">#за один кадр препятствие сдвинется на 4.8 пикселя влево</span>
+
+<div class="viewcode-block" id="Obstacle.is_offscreen">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.is_offscreen">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_offscreen</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#проверка, вышло ли препятствие за левую границу</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Проверяет, вышло ли препятствие за левую границу экрана.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True если препятствие полностью вышло за левый край экрана.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Если объект позиция меньше чем позиция за границой (-), то значит объект вышел за границу.</span>
+<span class="sd">            50px - справа, -50px слева</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span></div>
+
+        <span class="c1">#если объект позиця меньше чем позиция за границой (-), то значит объект вышел за границу 50px - справа, -50px слева</span>
+
+<div class="viewcode-block" id="Obstacle.draw">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.draw">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span> <span class="c1">#рисуем препятствие</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует препятствие на экране.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Игровое окно, на котором рисуем.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#screen - игровое окно, на котомром рисуем</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="p">:</span> <span class="c1">#если есть в спрайтах</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sprite</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Obstacle.collides_with">
+<a class="viewcode-back" href="../../game_module.html#game.obstacle.Obstacle.collides_with">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">collides_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span> <span class="c1">#проверка столкновения с другим объектом.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Проверка столкновения с другим объектом.</span>
+
+<span class="sd">        Создает разные хитбоксы для разных типов препятствий.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (BaseObject): Другой объект для проверки столкновения.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True если объекты пересекаются с учетом хитбокса.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            - Для птиц: уменьшенный хитбокс (-25, -25)</span>
+<span class="sd">            - Для наземных препятствий: уменьшенный и смещенный вниз хитбокс</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># !!!создаем хитбоксы</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_flying</span><span class="p">:</span>
+            <span class="c1">#птица</span>
+            <span class="n">bird_hitbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">inflate</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">)</span> <span class="c1">#уменьшаем размер по сравнению с оригиналом</span>
+            <span class="k">return</span> <span class="n">bird_hitbox</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span> <span class="c1">#возвращаем столкновение</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#кости</span>
+            <span class="n">ground_hitbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">inflate</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">)</span>
+            <span class="n">ground_hitbox</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="mi">15</span>
+            <span class="k">return</span> <span class="n">ground_hitbox</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

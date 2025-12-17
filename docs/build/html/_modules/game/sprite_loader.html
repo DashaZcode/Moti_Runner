@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.sprite_loader &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.sprite_loader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.sprite_loader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль sprite_loader - загрузчик и обработчик спрайтов.</span>
+
+<span class="sd">Содержит класс SpriteLoader со статическими методами для загрузки,</span>
+<span class="sd">масштабирования и преобразования спрайтов из файлов.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+
+<div class="viewcode-block" id="SpriteLoader">
+<a class="viewcode-back" href="../../game_module.html#game.sprite_loader.SpriteLoader">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpriteLoader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Загрузчик и обработчик спрайтов для игры.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SpriteLoader.load_sprite">
+<a class="viewcode-back" href="../../game_module.html#game.sprite_loader.SpriteLoader.load_sprite">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_sprite</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает и подготавливает спрайт из файла.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Путь к файлу изображения.</span>
+<span class="sd">            width (int, optional): Новая ширина спрайта.</span>
+<span class="sd">            height (int, optional): Новая высота спрайта.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pygame.Surface: Загруженный и обработанный спрайт.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#path - путь к файлу изображения</span>
+        <span class="n">sprite</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="c1">#атрибут для хранения изображения</span>
+
+        <span class="k">if</span> <span class="n">sprite</span><span class="o">.</span><span class="n">get_alpha</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="c1">#если файл прозрачный возвращает 255, если нет 0. Если непрозрачный</span>
+            <span class="n">sprite</span> <span class="o">=</span> <span class="n">sprite</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span> <span class="c1">#конвертируем без прозрачности</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1">#если файл имеет прозрачность</span>
+            <span class="n">sprite</span> <span class="o">=</span> <span class="n">sprite</span><span class="o">.</span><span class="n">convert_alpha</span><span class="p">()</span> <span class="c1"># конвентируем как прозрачный</span>
+
+        <span class="k">if</span> <span class="n">width</span> <span class="ow">and</span> <span class="n">height</span><span class="p">:</span>
+            <span class="n">sprite</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">sprite</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+        <span class="c1"># для всех файлов, если не указан размер, то он останется изначальным. Если указан, то он будет менять размер на указанный</span>
+        <span class="k">return</span> <span class="n">sprite</span></div>
+
+
+    <span class="n">load_sprite</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">load_sprite</span><span class="p">)</span>
+
+    <span class="c1">#функция для отражения каждого спрайта !!!инструмент!!!</span>
+<div class="viewcode-block" id="SpriteLoader.flip_sprites">
+<a class="viewcode-back" href="../../game_module.html#game.sprite_loader.SpriteLoader.flip_sprites">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flip_sprites</span><span class="p">(</span><span class="n">sprites</span><span class="p">,</span> <span class="n">flip_x</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">flip_y</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Отражает спрайты по горизонтали и/или вертикали.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sprites (list): Список спрайтов для отражения.</span>
+<span class="sd">            flip_x (bool): Отразить по горизонтали.</span>
+<span class="sd">            flip_y (bool): Отразить по вертикали.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Список отраженных спрайтов.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">sprite</span><span class="p">,</span> <span class="n">flip_x</span><span class="p">,</span> <span class="n">flip_y</span><span class="p">)</span> <span class="k">for</span> <span class="n">sprite</span> <span class="ow">in</span> <span class="n">sprites</span><span class="p">]</span></div>
+
+    <span class="c1">#transform - модуль для преобразования, flip - отразить</span>
+    <span class="c1">#анимация бега влево = [</span>
+        <span class="c1">#кадр1 бег влево,   отражённая версия</span>
+        <span class="c1">#кадр2 бег влево,... отражённая версия</span>
+    <span class="c1"># ]</span>
+
+
+    <span class="n">flip_sprites</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">flip_sprites</span><span class="p">)</span>
+
+
+    <span class="c1">#инструмент для получения пути</span>
+<div class="viewcode-block" id="SpriteLoader.get_assets_path">
+<a class="viewcode-back" href="../../game_module.html#game.sprite_loader.SpriteLoader.get_assets_path">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_assets_path</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Возвращает путь к папке assets относительно текущего файла.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Абсолютный путь к папке assets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+        <span class="c1">#os.path.dirname получаем папку, где лежит файл - &quot;C:\project\game\run.py&quot; → &quot;C:\project\game\&quot;</span>
+        <span class="c1">#получаем путь и делаем его абсолютым(от корня до фала) - &quot;run.py&quot; → &quot;C:\project\game\run.py&quot;</span>
+
+        <span class="n">assets_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">)</span> <span class="c1">#выходим в родительску папку и получаем путь с assets</span>
+        <span class="c1">#os.path.join(&quot;C:\project\game\&quot;, &quot;..&quot;, &quot;assets&quot;) → &quot;C:\project\assets&quot;</span>
+        <span class="k">return</span> <span class="n">assets_path</span></div>
+
+
+    <span class="n">get_assets_path</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">get_assets_path</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

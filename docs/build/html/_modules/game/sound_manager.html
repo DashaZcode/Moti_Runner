@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.sound_manager &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.sound_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.sound_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль sound_manager - менеджер звуков и музыки.</span>
+
+<span class="sd">Содержит класс SoundManager для управления звуковыми эффектами,</span>
+<span class="sd">фоновой музыкой и настройками громкости в игре.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+
+<div class="viewcode-block" id="SoundManager">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SoundManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Менеджер звуков для игры.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        sounds (dict): Словарь для хранения загруженных звуковых эффектов.</span>
+<span class="sd">        music_playing (bool): Флаг: играет ли фоновая музыка сейчас.</span>
+<span class="sd">        sound_enabled (bool): Флаг: включены ли звуковые эффекты.</span>
+<span class="sd">        music_enabled (bool): Флаг: включена ли фоновая музыка.</span>
+<span class="sd">        volume (float): Общая громкость от 0.0 (тихо) до 1.0 (максимум).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>     <span class="c1"># Инициализация менеджера звуков с настройками по умолчанию</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Инициализация менеджера звуков с настройками по умолчанию.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span> <span class="o">=</span> <span class="p">{}</span>    <span class="c1"># Словарь для хранения загруженных звуковых эффектов</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span> <span class="o">=</span> <span class="kc">False</span>     <span class="c1"># Флаг: играет ли фоновая музыка сейчас</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span> <span class="o">=</span> <span class="kc">True</span>      <span class="c1"># Флаг: включены ли звуковые эффекты</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span> <span class="o">=</span> <span class="kc">True</span>      <span class="c1"># Флаг: включена ли фоновая музыка</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="mf">0.5</span>              <span class="c1"># Общая громкость от 0.0 (тихо) до 1.0 (максимум)</span>
+
+<div class="viewcode-block" id="SoundManager.load_sounds">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.load_sounds">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_sounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает звуки из папки assets/sounds.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True если хотя бы один звук был загружен, иначе False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sounds_path</span> <span class="o">=</span> <span class="s2">&quot;assets/sounds&quot;</span>     <span class="c1"># Путь к папке со звуками</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">sounds_path</span><span class="p">):</span>     <span class="c1"># Проверяем, существует ли папка со звуками</span>
+            <span class="k">return</span> <span class="kc">False</span>      <span class="c1"># Если папки нет - возвращаем ошибку</span>
+
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">sounds_path</span><span class="p">):</span>       <span class="c1"># Проходим по всем файлам в папке</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.wav&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.mp3&#39;</span><span class="p">):</span>       <span class="c1"># Фильтруем только звуковые файлы (wav или mp3)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>      <span class="c1"># Извлекаем имя звука без расширения (например, &quot;jump&quot; из &quot;jump.wav&quot;)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sounds_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>      <span class="c1"># Собираем полный путь к файлу</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">Sound</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>     <span class="c1"># Загружаем звук и сохраняем в словарь</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>     <span class="c1"># Если не удалось загрузить файл - пропускаем его</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>      <span class="c1"># Возвращаем True если хотя бы один звук был загружен</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.preload">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.preload">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">preload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Инициализирует звуковую систему и загружает звуки.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True если инициализация успешна, иначе False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">get_init</span><span class="p">():</span>     <span class="c1"># Проверяем, инициализирован ли микшер pygame (звуковая система)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>     <span class="c1"># Пытаемся инициализировать звуковую систему</span>
+            <span class="k">except</span><span class="p">:</span>                     <span class="c1"># Если не удалось - отключаем все звуки</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="kc">False</span>      <span class="c1"># Возвращаем ошибку</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_sounds</span><span class="p">()</span>      <span class="c1"># Загружаем звуковые эффекты</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.play_sound">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.play_sound">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">play_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Воспроизводит звуковой эффект.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Имя звукового эффекта.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">:</span>     <span class="c1"># Проверяем: включены ли звуки и есть ли такой звук в словаре</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>     <span class="c1"># Воспроизводим звук</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>      <span class="c1"># Если не удалось воспроизвести - игнорируем ошибку</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.play_music">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.play_music">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">play_music</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loop</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Воспроизводит фоновую музыку.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            loop (int): Количество повторений (-1 для бесконечного).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span><span class="p">:</span>    <span class="c1"># Проверяем, включена ли музыка</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">music_path</span> <span class="o">=</span> <span class="s2">&quot;assets/sounds/background.mp3&quot;</span>    <span class="c1"># Путь к файлу фоновой музыки</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">music_path</span><span class="p">):</span>    <span class="c1"># Проверяем существование файла</span>
+                    <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">music_path</span><span class="p">)</span>       <span class="c1"># Загружаем музыку</span>
+                    <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>    <span class="c1"># Устанавливаем громкость (музыка тише звуков)</span>
+                    <span class="c1"># Воспроизводим музыку</span>
+                    <span class="c1"># loop=-1 означает бесконечное повторение</span>
+                    <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span> <span class="o">=</span> <span class="kc">True</span>    <span class="c1"># Устанавливаем флаг, что музыка играет</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>     <span class="c1"># Если не удалось загрузить или воспроизвести музыку</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.set_volume">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.set_volume">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Устанавливает общую громкость.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            volume (float): Громкость от 0.0 до 1.0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">volume</span><span class="p">))</span>     <span class="c1"># Ограничиваем громкость в диапазоне от 0.0 до 1.0</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)</span>    <span class="c1"># Устанавливаем громкость музыки (делаем её тише звуков)</span>
+
+        <span class="k">for</span> <span class="n">sound</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sounds</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>    <span class="c1"># Устанавливаем громкость для всех звуковых эффектов</span>
+            <span class="n">sound</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.toggle_sound">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.toggle_sound">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Переключает звуковые эффекты.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Новое состояние звуковых эффектов.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span>    <span class="c1"># Меняем состояние на противоположное</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sound_enabled</span>     <span class="c1"># Возвращаем новое состояние</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.toggle_music">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.toggle_music">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_music</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Переключает фоновую музыку.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Новое состояние музыки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span>    <span class="c1"># Меняем состояние музыки на противоположное</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span><span class="p">:</span>     <span class="c1"># Если музыку включили и она не играет - запускаем</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">play_music</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span><span class="p">:</span>   <span class="c1"># Если музыку выключили и она играет - останавливаем</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">music_enabled</span>    <span class="c1"># Возвращаем новое состояние</span></div>
+
+
+<div class="viewcode-block" id="SoundManager.stop_music">
+<a class="viewcode-back" href="../../game_module.html#game.sound_manager.SoundManager.stop_music">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_music</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Остановка музыки&quot;&quot;&quot;</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">music</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>    <span class="c1"># Останавливаем воспроизведение музыки</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">music_playing</span> <span class="o">=</span> <span class="kc">False</span>    <span class="c1"># Сбрасываем флаг воспроизведения</span></div>
+</div>
+
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

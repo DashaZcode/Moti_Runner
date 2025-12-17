@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.game_manager &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.game_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.game_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль game_manager - основной менеджер игры.</span>
+
+<span class="sd">Содержит класс GameManager, который управляет всей игровой логикой,</span>
+<span class="sd">объектами, событиями и отрисовкой, координируя работу всех компонентов.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.player</span><span class="w"> </span><span class="kn">import</span> <span class="n">Player</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.obstacle</span><span class="w"> </span><span class="kn">import</span> <span class="n">Obstacle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sprite_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpriteLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sound_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">SoundManager</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_score</span>
+
+
+<div class="viewcode-block" id="GameManager">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GameManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Основной менеджер игры, управляющий логикой, объектами и отрисовкой.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        screen_width (int): Ширина игрового окна.</span>
+<span class="sd">        screen_height (int): Высота игрового окна.</span>
+<span class="sd">        ground_y (int): Координата Y уровня земли.</span>
+<span class="sd">        background_sprites (dict): Загруженные фоновые спрайты.</span>
+<span class="sd">        sound_manager (SoundManager): Менеджер звуков.</span>
+<span class="sd">        player (Player): Объект игрока.</span>
+<span class="sd">        obstacles (list): Список активных препятствий.</span>
+<span class="sd">        clouds (list): Список облаков.</span>
+<span class="sd">        score (int): Текущий счет игрока.</span>
+<span class="sd">        lives (int): Количество жизней.</span>
+<span class="sd">        game_speed (int): Текущая скорость игры.</span>
+<span class="sd">        game_over (bool): Флаг завершения игры.</span>
+<span class="sd">        is_paused (bool): Флаг паузы.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen_width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">screen_height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">initial_speed</span><span class="o">=</span><span class="mi">400</span><span class="p">):</span>
+
+        <span class="c1">#сохраняем ширину экрана в атрибуте объекта</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">=</span> <span class="n">screen_width</span>
+        <span class="c1">#высоту</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">=</span> <span class="n">screen_height</span>
+        <span class="c1">#определяем высоту, если выота всего экрана=800, то ground_y находится выше=700</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span> <span class="o">=</span> <span class="n">screen_height</span> <span class="o">-</span> <span class="mi">100</span>
+
+        <span class="c1">#згрузка фоновых спрайтов</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_background_sprites</span><span class="p">()</span>
+
+        <span class="c1">#инициализация звуковой системы</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span> <span class="o">=</span> <span class="n">SoundManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">preload</span><span class="p">()</span>
+
+        <span class="c1">#создаем игрока</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">Player</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span><span class="p">)</span>
+        <span class="c1">#создает игрока на позиции:</span>
+        <span class="c1">#x=100px пикселей от левого края</span>
+        <span class="c1">#y=self.ground_y на уровне земли</span>
+
+        <span class="c1">#игровые параметры</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#список препятсвий</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1">#список облаков</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#начальный счет игрока</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1">#жизни</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span> <span class="o">=</span> <span class="n">initial_speed</span> <span class="c1">#скорость или по уомлчанию или пользовательская</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1">#флаг заврешения игры</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#флаг паузы, игра на паузе</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_timer</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#таймер для генерации препятствий, время с последнего созданного препятствия</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_timer</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#таймер для облаков</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_interval</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="c1">#Каждые 1.5 секунды будет появляться новое препятствие</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed_increase_interval</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1">#каждые 5 набраных очков скорость будет увеличиваться</span>
+
+        <span class="c1">#шрифты</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span> <span class="c1">#обычный шрифт всего текста</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">big_font</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">96</span><span class="p">)</span> <span class="c1">#шрифт для большого текста</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_ui_sprites</span><span class="p">()</span> <span class="c1">#загрузка UI спрайтов</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_initial_clouds</span><span class="p">()</span> <span class="c1">#создаем начальные облака</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_music</span><span class="p">()</span> <span class="c1">#запуск фоновой музыки</span>
+
+<div class="viewcode-block" id="GameManager.load_background_sprites">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.load_background_sprites">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_background_sprites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#загрузка фоновых спрайтов</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает фоновые спрайты из папки assets/background.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Словарь с загруженными спрайтами.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">assets_path</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">get_assets_path</span><span class="p">()</span>
+        <span class="n">background_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">assets_path</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">)</span>
+
+        <span class="n">sprites</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ground&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="c1">#оземля, пока не загружено</span>
+            <span class="s1">&#39;cloud&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="c1">#облака</span>
+            <span class="s1">&#39;mountain&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="c1">#горы</span>
+        <span class="p">}</span>
+
+        <span class="c1">#ЗАГРУЖАЕМ ФАЙЛЫ В СЛОВАРЬ</span>
+        <span class="c1">#земля</span>
+        <span class="n">ground_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">background_path</span><span class="p">,</span> <span class="s1">&#39;ground.png&#39;</span><span class="p">)</span>
+        <span class="n">sprites</span><span class="p">[</span><span class="s1">&#39;ground&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">ground_file</span><span class="p">)</span>
+
+        <span class="c1">#облако</span>
+        <span class="n">cloud_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">background_path</span><span class="p">,</span> <span class="s1">&#39;cloud.png&#39;</span><span class="p">)</span>
+        <span class="n">sprites</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">cloud_file</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+
+        <span class="c1">#горы</span>
+        <span class="n">mountain_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">background_path</span><span class="p">,</span> <span class="s1">&#39;mountain.png&#39;</span><span class="p">)</span>
+        <span class="n">sprites</span><span class="p">[</span><span class="s1">&#39;mountain&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">mountain_file</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">225</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sprites</span></div>
+
+
+<div class="viewcode-block" id="GameManager.load_ui_sprites">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.load_ui_sprites">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_ui_sprites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#Загрузка UI спрайтов</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загружает UI спрайты из папки assets/ui.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Словарь с загруженными UI спрайтами.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">assets_path</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">get_assets_path</span><span class="p">()</span>
+        <span class="n">ui_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">assets_path</span><span class="p">,</span> <span class="s1">&#39;ui&#39;</span><span class="p">)</span>
+
+        <span class="n">sprites</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;heart&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="c1">#сердце</span>
+            <span class="s1">&#39;game_over&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="c1">#сердце</span>
+        <span class="p">}</span>
+
+        <span class="c1">#сердечко для жизней</span>
+        <span class="n">heart_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ui_path</span><span class="p">,</span> <span class="s1">&#39;heart.png&#39;</span><span class="p">)</span>
+        <span class="n">sprites</span><span class="p">[</span><span class="s1">&#39;heart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">heart_file</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+
+        <span class="c1">#game Over</span>
+        <span class="n">game_over_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ui_path</span><span class="p">,</span> <span class="s1">&#39;game_over.png&#39;</span><span class="p">)</span>
+        <span class="n">sprites</span><span class="p">[</span><span class="s1">&#39;game_over&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">game_over_file</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sprites</span></div>
+
+
+<div class="viewcode-block" id="GameManager.create_initial_clouds">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.create_initial_clouds">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_initial_clouds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#создание начальных облаков</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Создает начальные облака со случайными параметрами.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span> <span class="c1">#цикл 5 раз без переменной</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">)</span>
+            <span class="c1">#случайное расположение облаков от 0 до ширины экрана</span>
+            <span class="c1">#сли screen_width=1200, x может быть любым</span>
+
+            <span class="c1">#генерируем сучайную высоту и скорость</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+            <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+
+            <span class="c1">#добавляем новое облако в список self.clouds</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="n">speed</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="GameManager.handle_events">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.handle_events">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#обработка событий</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обрабатывает события игры.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: False если нужно выйти из игры, иначе True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#йикл for, который проходит по ВСЕМ событиям в очереди событий pygame</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+
+            <span class="c1">#если это событие закрытия окна QUIT</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">:</span>
+                <span class="c1">#возвращаем False - завершение</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1">#если событие нажатие на клавиатуру KEYDOWN</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+
+                <span class="c1">#Если это ПРОБЕЛ, игра НЕ закончена (not self.game_over), игра НЕ на паузе (not self.is_paused)</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_SPACE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span><span class="p">:</span>
+                    <span class="c1">#воспроизводим звук прыжка</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;jump&#39;</span><span class="p">)</span>
+                    <span class="c1">#вызываем метод jump() для прыжка</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">jump</span><span class="p">()</span>
+
+                <span class="c1">#если нажата клавиша R (K_r) И игра закончена</span>
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_r</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span><span class="p">:</span>
+                    <span class="c1">#звук кнопки</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">)</span>
+                    <span class="c1">#перезапускаем игру</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">reset_game</span><span class="p">()</span>
+
+                <span class="c1">#если нажата клавиша ESC</span>
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_ESCAPE</span><span class="p">:</span>
+                    <span class="c1">#возвращаем False для выхода из игры</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="c1">#если нажата клавиша P (K_p)</span>
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">K_p</span><span class="p">:</span>
+                    <span class="c1">#переключаем состояние паузы включить/выключить</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">toggle_pause</span><span class="p">()</span>
+
+        <span class="c1">#если ни одно из событий не привело к выходу из игры, возвращаем True, чтобы главный цикл продолжил работу</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="GameManager.toggle_pause">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.toggle_pause">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#включение/выключение паузы</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Переключает состояние паузы игры.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span> <span class="c1">#нажимаем клавишу P, вызывается toggle_pause():</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;pause&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Пауза&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;resume&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Игра работает&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GameManager.update">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.update">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span> <span class="c1">#игра</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет состояние игры.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span><span class="p">:</span> <span class="c1">#если на паузе или игрок умер, выходим из мтеода</span>
+            <span class="k">return</span>
+
+        <span class="c1">#вызываем игрока и пишем его время</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+        <span class="c1">#накапливает время с момента создания последнего препятствия</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_timer</span> <span class="o">+=</span> <span class="n">dt</span>
+
+        <span class="c1">#если накопленое время превышает 1.5 интервал</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_timer</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_interval</span><span class="p">:</span>
+             <span class="c1">#добавляет новый объект в конце списка</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Obstacle</span><span class="o">.</span><span class="n">create_random</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_timer</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#сбрасывает таймер препятствия в 0, чтобы начать отсчет до следующего препятствия</span>
+
+        <span class="c1">#обновляем препятствия</span>
+        <span class="k">for</span> <span class="n">obstacle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="p">[:]:</span> <span class="c1">#копируем список для удаления препятсвий</span>
+            <span class="n">obstacle</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> <span class="c1">#перпятсвие движется влево каждый кадр</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">collides_with</span><span class="p">(</span><span class="n">obstacle</span><span class="p">):</span> <span class="c1">#если грок столкнулся с препятствием</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;collision&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">-=</span> <span class="mi">1</span>  <span class="c1">#уменьшаем жизни</span>
+
+                <span class="c1">#удаляем препятствие при столкновении</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obstacle</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#если 0 жиней</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#заканчиваем игру</span>
+                    <span class="k">return</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1">#игрок получает неуязвимость после потери жизни</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">invulnerable</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1">#игрок не может получать урон</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">invulnerable_timer</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1">#1 секунда неуязвимости</span>
+
+            <span class="c1">#увеличиваем счет, если прошли препятствие</span>
+
+            <span class="c1">#Правая сторона препятствия ЛЕВЕЕ левой стороны игрока</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">passed</span> <span class="ow">and</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">width</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+                <span class="c1">#obstacle.passed - препятствие еще не пройдено</span>
+                <span class="c1">#obstacle.rect.x + obstacle.rect.width -  левая координата препятствия + ширина препятствия = правая координата препятствия</span>
+                <span class="c1"># &lt; self.player.rect.x - левая координата игрока</span>
+                <span class="n">obstacle</span><span class="o">.</span><span class="n">passed</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">)</span>
+
+                <span class="c1">#увеличиваем скорость каждые n очков</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed_increase_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1">#Если счет делится без остатка на интервалл, увеличиваем скорость</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span> <span class="o">+=</span> <span class="mi">50</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_interval</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_interval</span> <span class="o">-</span> <span class="mf">0.05</span><span class="p">)</span>
+                    <span class="c1">#eменьшаем интервал между препятствиями на 0.05 секунды</span>
+                    <span class="c1">#max(1.0, ...) - гарантирует что интервал не станет меньше 1.0 секунды</span>
+
+            <span class="c1">#удаляем препятствия за экраном</span>
+            <span class="k">if</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">is_offscreen</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obstacle</span><span class="p">)</span>
+
+        <span class="c1">#обновляем игрока неуязвимость</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">update_invulnerability</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="GameManager.draw_background">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.draw_background">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует фон игры.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#screen - игровок окно</span>
+        <span class="c1">#фон</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">):</span>
+            <span class="c1">#pапускает цикл по всем горизонтальным строкам экрана — от y = 0 (самый верх)</span>
+            <span class="c1">#до y = self.screen_height - 1 самый низ</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="c1">#рисует горизонтальную линию</span>
+            <span class="c1">#от точки (0, y) (левый край строки) до (self.screen_width, y) (правый край строки)</span>
+
+        <span class="c1">#горы</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;mountain&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">400</span>  <span class="c1">#рисуем горы 4 раза</span>
+                <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;mountain&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span> <span class="o">-</span> <span class="mi">225</span><span class="p">))</span>
+                <span class="c1">#рисуем по левой границе горизонтали x на высоте475px (1200 - 225) ОТ ВВЕРХА ЭКРАНА</span>
+
+        <span class="c1">#облака</span>
+        <span class="n">cloud_sprite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;cloud&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">cloud</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cloud_sprite</span><span class="p">:</span>
+                <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">cloud_sprite</span><span class="p">,</span> <span class="p">(</span><span class="n">cloud</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">cloud</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]))</span>
+        <span class="c1">#self.clouds = [</span>
+        <span class="c1">#{&#39;x&#39;: 500, &#39;y&#39;: 100, &#39;speed&#39;: 40},  Облако 1</span>
+        <span class="c1">#{&#39;x&#39;: 300, &#39;y&#39;: 200, &#39;speed&#39;: 60},  Облако 2</span>
+        <span class="c1">#береберам список заромандезированных облаков</span>
+
+        <span class="c1">#земля</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;ground&#39;</span><span class="p">]:</span>
+            <span class="n">ground_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;ground&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="c1">#запрос ширины картинки</span>
+            <span class="c1">#цикл для рисования земли от левого до правого края экран</span>
+            <span class="c1">#ground_width = 200 (ширина картинки земли)</span>
+            <span class="c1"># self.screen_width = 1200 (ширина экрана)</span>
+            <span class="c1">#for x in range(0, 1200, 200):</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="n">ground_width</span><span class="p">):</span>
+                <span class="c1">#self.screen_width - ширина экрана</span>
+                <span class="c1">#ширина картинки</span>
+                <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_sprites</span><span class="p">[</span><span class="s1">&#39;ground&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span><span class="p">))</span> <span class="c1">#от левого края от вверхнеего края 700</span></div>
+
+                <span class="c1"># (то есть внизу займет 100 пикслей)</span>
+
+    <span class="c1">#рисуем все</span>
+<div class="viewcode-block" id="GameManager.draw">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.draw">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует всю игру на экране.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#фон</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_background</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="c1">#препятствия</span>
+        <span class="k">for</span> <span class="n">obstacle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="p">:</span>
+            <span class="n">obstacle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="c1">#игрок</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="c1">#HUD</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_hud</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+
+        <span class="c1">#Game Over</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_game_over</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>
+        <span class="c1">#пауза</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_pause_menu</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="GameManager.draw_hud">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.draw_hud">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_hud</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span> <span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует интерфейс пользователя (счет, жизни, управление).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Создаем текст с текущим счетом розовым цветом</span>
+        <span class="n">score_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SCORE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">score_text</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>        <span class="c1"># Рисуем текст в левом верхнем углу (координаты 30, 30)</span>
+
+        <span class="c1"># Преобразуем скорость в целое число для отображения</span>
+        <span class="n">speed_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SPEED: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">speed_text</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>         <span class="c1"># Рисуем под счетом (с отступом 50 пикселей по вертикали)</span>
+
+        <span class="c1"># Отображаем количество оставшихся жизней</span>
+        <span class="n">lives_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;LIVES: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lives</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">lives_text</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">130</span><span class="p">))</span>       <span class="c1"># Рисуем под скоростью</span>
+
+        <span class="c1"># Отображение сердечек</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span><span class="p">[</span><span class="s1">&#39;heart&#39;</span><span class="p">]</span> <span class="p">:</span>         <span class="c1"># Проверяем, есть ли спрайт сердца в словаре UI-спрайтов</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lives</span><span class="p">)</span> <span class="p">:</span>
+                <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span><span class="p">[</span><span class="s1">&#39;heart&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mi">250</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">125</span><span class="p">))</span>              <span class="c1"># Рисуем сердечки по количеству жизней (каждое сердце - 50 пикселей правее предыдущего) справа от текста с жизнями</span>
+
+        <span class="c1"># Управление - УБИРАЕМ DOWN - Duck</span>
+        <span class="c1"># Список подсказок по управлению</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;SPACE - Jump&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;P - Pause&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;R - Restart&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ESC - Quit&quot;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Рисуем каждую подсказку в правом верхнем углу</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">control</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">controls</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">190</span><span class="p">))</span>         <span class="c1"># Создаем текст для каждой команды управления</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">-</span> <span class="n">text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">50</span><span class="p">))</span>         <span class="c1"># Располагаем справа с отступом 30 пикселей от края</span>
+                                                                                             <span class="c1"># Выравниваем по правому краю, вычитая ширину текста</span>
+
+        <span class="c1"># Индикатор паузы</span>
+        <span class="c1"># Если игра на паузе - показываем большой текст &quot;PAUSED&quot; по центру</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span> <span class="p">:</span>
+            <span class="n">pause_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">big_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;PAUSED&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">pause_text</span><span class="p">,</span>                      <span class="c1"># Центрируем текст по горизонтали и вертикали</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">pause_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">50</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="GameManager.draw_pause_menu">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.draw_pause_menu">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_pause_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span> <span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует меню паузы.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Полупрозрачный overlay</span>
+        <span class="n">overlay</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="n">overlay</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span>       <span class="c1"># Заливаем темно-розовым с прозрачностью (180 из 255)</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">overlay</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>          <span class="c1"># Рисуем затемнение поверх всего экрана</span>
+
+        <span class="c1"># Заголовок - только текст, без спрайта</span>
+        <span class="n">pause_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">big_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;PAUSED&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">pause_text</span><span class="p">,</span>                       <span class="c1"># Центрируем заголовок в верхней части экрана</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">pause_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">200</span><span class="p">))</span>
+
+        <span class="c1"># Опции меню</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Press P to Resume&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;M - Toggle Music&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;S - Toggle Sound&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;+/- - Adjust Volume&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ESC - Quit Game&quot;</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Рисуем каждую опцию по центру экрана</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">option</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">option_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">))</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">option_text</span><span class="p">,</span>                          <span class="c1"># Располагаем опции вертикально с интервалом 60 пикселей</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">option_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">50</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
+
+        <span class="c1"># Статус звука</span>
+        <span class="c1"># Выбираем иконки в зависимости от включенного звука/музыки</span>
+        <span class="n">sound_icon</span> <span class="o">=</span> <span class="s2">&quot;🔊&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">sound_enabled</span> <span class="k">else</span> <span class="s2">&quot;🔇&quot;</span>
+        <span class="n">music_icon</span> <span class="o">=</span> <span class="s2">&quot;🎵&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">music_enabled</span> <span class="k">else</span> <span class="s2">&quot;🔇&quot;</span>
+        <span class="n">status_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>              <span class="c1"># Создаем строку со статусом аудио</span>
+            <span class="sa">f</span><span class="s1">&#39;Sound: </span><span class="si">{</span><span class="n">sound_icon</span><span class="si">}</span><span class="s1">  Music: </span><span class="si">{</span><span class="n">music_icon</span><span class="si">}</span><span class="s1">  Volume: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">volume</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">status_text</span><span class="p">,</span>          <span class="c1"># Выводим статус внизу экрана</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">status_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">250</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="GameManager.draw_game_over">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.draw_game_over">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw_game_over</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">)</span> <span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Рисует экран завершения игры.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;score_saved&#39;</span><span class="p">):</span>  <span class="c1"># Проверяем, не сохраняли ли уже</span>
+            <span class="n">save_score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">score_saved</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Помечаем, что сохранили</span>
+
+        <span class="c1"># Полупрозрачное затемнение</span>
+        <span class="n">overlay</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="n">overlay</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>       <span class="c1"># Темно-розовый с меньшей прозрачностью</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">overlay</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Звук Game Over (проигрываем один раз)</span>
+        <span class="c1"># Проверяем, был ли уже проигран звук (чтобы не повторять)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;game_over_sound_played&#39;</span><span class="p">)</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sound_manager</span><span class="o">.</span><span class="n">play_sound</span><span class="p">(</span><span class="s1">&#39;game_over&#39;</span><span class="p">)</span>         <span class="c1"># Проигрываем звук &quot;game over&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_over_sound_played</span> <span class="o">=</span> <span class="kc">True</span>                 <span class="c1"># Устанавливаем флаг, что звук уже проигран</span>
+
+        <span class="c1"># Game Over текст или спрайт</span>
+        <span class="c1"># Если есть спрайт для &quot;Game Over&quot; - используем его</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span><span class="p">[</span><span class="s1">&#39;game_over&#39;</span><span class="p">]</span> <span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span><span class="p">[</span><span class="s1">&#39;game_over&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span>           <span class="c1"># Центрируем спрайт по горизонтали</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">200</span>           <span class="c1"># Фиксированная позиция по вертикали</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ui_sprites</span><span class="p">[</span><span class="s1">&#39;game_over&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        <span class="k">else</span> <span class="p">:</span>            <span class="c1"># Если спрайта нет - рисуем текст</span>
+            <span class="n">game_over_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">big_font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;GAME OVER&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">game_over_text</span><span class="p">,</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">game_over_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">150</span><span class="p">))</span>
+
+        <span class="c1"># Статистика</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;Final Score: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>             <span class="c1"># Финальный счет</span>
+            <span class="sa">f</span><span class="s2">&quot;Max Speed: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>     <span class="c1"># Максимальная скорость</span>
+            <span class="sa">f</span><span class="s2">&quot;Obstacles Passed: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>        <span class="c1"># Препятствий пройдено:</span>
+            <span class="sa">f</span><span class="s2">&quot;Lives Lost: </span><span class="si">{</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">lives</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Lives: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lives</span><span class="si">}</span><span class="s2">/3&quot;</span>       <span class="c1"># Если жизни потеряны - показываем сколько, иначе показываем полные жизни</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Рисуем статистику по центру экрана</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stat</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="p">:</span>
+            <span class="n">stat_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">))</span>
+            <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">stat_text</span><span class="p">,</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">stat_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">20</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
+
+        <span class="c1"># Инструкция, что делать дальше</span>
+        <span class="n">restart_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;Press R to restart or ESC to quit&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+        <span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">restart_text</span><span class="p">,</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">restart_text</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">180</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="GameManager.reset_game">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.reset_game">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset_game</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Сбрасывает игру к начальному состоянию.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lives</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Восстанавливаем жизни</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_paused</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_timer</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span> <span class="o">=</span> <span class="mi">400</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacle_interval</span> <span class="o">=</span> <span class="mf">1.8</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;game_over_sound_played&#39;</span><span class="p">):</span> <span class="c1">#если уже играла музыка проигрыша, удаляем ее</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over_sound_played</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_initial_clouds</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Game reset&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GameManager.get_game_result">
+<a class="viewcode-back" href="../../game_module.html#game.game_manager.GameManager.get_game_result">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_game_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Возвращает результаты игры.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Словарь с результатами игры.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#получение результатов игры</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+            <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_speed</span><span class="p">),</span>
+            <span class="s1">&#39;lives&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lives</span>
+        <span class="p">}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

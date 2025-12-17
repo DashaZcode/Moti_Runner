@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>game.player &mdash; документация Moti Runner 1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9ca2116e"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=cd1d70c9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../../genindex.html" />
+    <link rel="search" title="Поиск" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Moti Runner
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Модули игры:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../game_module.html">Модуль game</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moti Runner</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Код модуля</a></li>
+      <li class="breadcrumb-item active">game.player</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Исходный код game.player</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Модуль player - класс игрока, управляемого пользователем.</span>
+
+<span class="sd">Содержит класс Player с реализацией физики прыжка, неуязвимости,</span>
+<span class="sd">анимаций и управления для главного персонажа игры.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base_object</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseObject</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sprite_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpriteLoader</span>
+
+
+<div class="viewcode-block" id="Player">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player">[документация]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Player</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">):</span>   <span class="c1"># Класс игрока, управдяемого пользователем</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Класс игрока, управляемого пользователем.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">120</span><span class="p">):</span>    <span class="c1"># Инициализация игрока</span>
+        <span class="c1"># Вызываем конструктор родительского класса BaseObject</span>
+        <span class="c1"># с начальной позицией, размером и цветом по умолчанию</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Инициализация игрока.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (int): Начальная координата X.</span>
+<span class="sd">            y (int): Начальная координата Y (уровень земли).</span>
+<span class="sd">            width (int): Ширина игрока. По умолчанию 90.</span>
+<span class="sd">            height (int): Высота игрока. По умолчанию 120.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+        <span class="c1"># Физика</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="mi">1800</span>    <span class="c1"># Сила гравитации (пикселей в секунду в квадрате)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jump_force</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1000</span>   <span class="c1"># Сила прыжка (отрицательная - вверх)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">=</span> <span class="mi">0</span>      <span class="c1"># Вертикальная скорость</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_jumping</span> <span class="o">=</span> <span class="kc">False</span>      <span class="c1"># Флаг: находится ли игрок в прыжке</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span> <span class="o">=</span> <span class="n">y</span>       <span class="c1"># Уровень земли (исходная позиция по Y)</span>
+
+        <span class="c1"># Неуязвимость после получения урона</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Флаг неуязвимости</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Таймер действия неуязвимости</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blink_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Таймер для мерцания (мигания)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Флаг видимости для мерцания</span>
+
+        <span class="c1"># Загрузка графических спрайтов</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_player_sprites</span><span class="p">()</span>
+
+        <span class="c1"># Начальная анимация</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_animation</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Параметры анимации</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation_frame_time</span> <span class="o">=</span> <span class="mf">0.15</span>    <span class="c1"># Время между кадрами анимации (секунды)</span>
+
+<div class="viewcode-block" id="Player.load_player_sprites">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.load_player_sprites">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_player_sprites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Загрузка всех спрайтов игрока&quot;&quot;&quot;</span>
+        <span class="c1"># Получаем путь к папке с ресурсами игры</span>
+        <span class="n">assets_path</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">get_assets_path</span><span class="p">()</span>
+        <span class="c1"># Формируем путь к папке со спрайтами игрока</span>
+        <span class="n">player_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">assets_path</span><span class="p">,</span> <span class="s1">&#39;player&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Анимация бега</span>
+        <span class="n">run_sprites</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Список для хранения кадров анимации бега</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">:</span>  <span class="c1"># Ожидаем файлы run1.png и run2.png</span>
+            <span class="n">sprite_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">player_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;run</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+            <span class="c1"># Пытаемся загрузить и масштабировать спрайт</span>
+            <span class="n">sprite</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">sprite_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sprite</span> <span class="p">:</span>  <span class="c1"># Если спрайт успешно загружен</span>
+                <span class="n">run_sprites</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sprite</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">run_sprites</span><span class="p">:</span>      <span class="c1"># Если удалось загрузить спрайты бега - сохраняем их</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">run_sprites</span>
+
+        <span class="c1"># Спрайт прыжка</span>
+        <span class="n">jump_sprite</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">player_path</span><span class="p">,</span> <span class="s2">&quot;jump.png&quot;</span><span class="p">)</span>
+        <span class="n">sprite</span> <span class="o">=</span> <span class="n">SpriteLoader</span><span class="o">.</span><span class="n">load_sprite</span><span class="p">(</span><span class="n">jump_sprite</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sprite</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span><span class="s2">&quot;jump&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sprite</span><span class="p">]</span>     <span class="c1"># Спрайт прыжка - один кадр</span>
+
+        <span class="c1"># Если не удалось загрузить ни одного спрайта</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_fallback_sprites</span><span class="p">()</span>     <span class="c1"># Создаем простую графику (запасной вариант)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_fallback_sprites</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Создание простой графики если нет спрайтов&quot;&quot;&quot;</span>
+        <span class="c1"># Анимация бега - первый кадр</span>
+        <span class="n">run_sprite1</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="c1"># Рисуем эллипс (тело игрока)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">run_sprite1</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="c1"># Рисуем внутренний эллипс (акцент)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">run_sprite1</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span>
+                            <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">20</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">20</span><span class="p">))</span>
+
+        <span class="c1"># Анимация бега - второй кадр (немного отличается)</span>
+        <span class="n">run_sprite2</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">run_sprite2</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+                            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">run_sprite2</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span> <span class="mi">170</span><span class="p">),</span>
+                            <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">10</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">run_sprite1</span><span class="p">,</span> <span class="n">run_sprite2</span><span class="p">]</span>    <span class="c1"># Сохраняем кадры анимации бега</span>
+
+        <span class="c1"># Прыжок</span>
+        <span class="n">jump_sprite</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">pygame</span><span class="o">.</span><span class="n">SRCALPHA</span><span class="p">)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">jump_sprite</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+                            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="c1"># Рисуем круг внутри эллипса</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">jump_sprite</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span>
+                           <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">//</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sprites</span><span class="p">[</span><span class="s2">&quot;jump&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">jump_sprite</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Player.jump">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.jump">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Выполняет прыжок игрока.</span>
+
+<span class="sd">        Условия для прыжка:</span>
+<span class="sd">        1. Игрок не в прыжке</span>
+<span class="sd">        2. Игрок не в состоянии неуязвимости</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Проверяем условия для прыжка:</span>
+        <span class="c1"># 1. Игрок не в прыжке</span>
+        <span class="c1"># 2. Игрок не в состоянии неуязвимости</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_jumping</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jump_force</span>  <span class="c1"># Придаем скорость вверх</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_jumping</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Устанавливаем флаг прыжка</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_animation</span><span class="p">(</span><span class="s2">&quot;jump&quot;</span><span class="p">)</span>  <span class="c1"># Переключаем на анимацию прыжка</span></div>
+
+
+<div class="viewcode-block" id="Player.update">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.update">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет физику игрока.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Применяем гравитацию - увеличиваем вертикальную скорость</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">dt</span>
+
+        <span class="c1"># Обновляем позицию - двигаем игрока по вертикали</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">*</span> <span class="n">dt</span>
+
+        <span class="c1"># Проверяем, стоит ли игрок на земле</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span><span class="p">:</span>    <span class="c1"># Если игрок ниже уровня земли - ставим его на землю</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Сбрасываем скорость</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_jumping</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Сбрасываем флаг прыжка</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_animation</span> <span class="o">!=</span> <span class="s2">&quot;run&quot;</span><span class="p">:</span>     <span class="c1"># Если не проигрывается анимация бега - переключаемся на нее</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_animation</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Обновляем анимацию    (вызываем метод родительского класса)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_animation</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Player.update_invulnerability">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.update_invulnerability">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_invulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Обновляет состояние неуязвимости игрока.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (float): Время, прошедшее с прошлого кадра.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="p">:</span>  <span class="c1"># Если игрок в состоянии неуязвимости</span>
+            <span class="c1"># Уменьшаем таймер неуязвимости</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable_timer</span> <span class="o">-=</span> <span class="n">dt</span>
+            <span class="c1"># Увеличиваем таймер мерцания</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blink_timer</span> <span class="o">+=</span> <span class="n">dt</span>
+
+            <span class="c1"># Мерцание каждые 0.1 секунды</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blink_timer</span> <span class="o">&gt;=</span> <span class="mf">0.1</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible</span>  <span class="c1"># Переключаем видимость</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blink_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Сбрасываем таймер мерцания</span>
+
+            <span class="c1"># Если время неуязвимости истекло</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable_timer</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Выключаем неуязвимость</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Гарантируем видимость</span></div>
+
+
+<div class="viewcode-block" id="Player.draw">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.draw">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Отрисовывает игрока с учетом неуязвимости.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            screen (pygame.Surface): Поверхность для отрисовки.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Рисуем игрока только если:</span>
+        <span class="c1"># 1. Он не неуязвим, ИЛИ</span>
+        <span class="c1"># 2. Он неуязвим, но сейчас должен быть виден (мерцание)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible</span><span class="p">)</span> <span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">screen</span><span class="p">)</span>      <span class="c1"># Вызываем метод отрисовки родительского класса</span></div>
+
+
+
+<div class="viewcode-block" id="Player.reset">
+<a class="viewcode-back" href="../../game_module.html#game.player.Player.reset">[документация]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Сброс состояния игрока&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ground_y</span>  <span class="c1"># Возвращаем на уровень земли</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity_y</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Сбрасываем скорость</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_jumping</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Сбрасываем флаг прыжка</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Выключаем неуязвимость</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invulnerable_timer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Сбрасываем таймер неуязвимости</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Гарантируем видимость</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_animation</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>  <span class="c1"># Устанавливаем анимацию бега</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2024, Автор. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
