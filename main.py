@@ -60,7 +60,7 @@ def main():
 
     # Вывод информации о запуске игры в консоль
     print("=" * 50)
-    print("🦊 MOTI RUNNER GAME")
+    print("MOTI RUNNER GAME")
     print("=" * 50)
     print(f"Player: {args.player}")     # Имя игрока
     print(f"Window: {args.width}x{args.height}")       # Размер окна
@@ -87,6 +87,7 @@ def main():
 
     # Инициализация игры
     game_manager = GameManager(args.width, args.height, args.speed)
+    game_manager.player_name = args.player  # Устанавливаем имя игрока
 
     # Игровой цикл
     start_time = time.time()     # Запоминаем время начала игры
@@ -115,7 +116,7 @@ def main():
 
             # Вывод результатов
             print("\n" + "=" * 50)
-            print("🎮 GAME OVER")
+            print("GAME OVER")
             print("=" * 50)
             print(f"Score: {game_result['score']}")     # Финальный счет
             print(f"Max Speed: {game_result['speed']}")     # Максимальная скорость
@@ -123,7 +124,7 @@ def main():
             print("=" * 50)
 
             # Ожидание рестарта или выхода
-            print("\n🔄 Press R to restart or ESC to quit")
+            print("\n Press R to restart or ESC to quit")
             waiting = True    # Флаг ожидания
             while waiting and running:     # Обработка событий в режиме ожидания
                 for event in pygame.event.get():
@@ -135,7 +136,7 @@ def main():
                             game_manager.reset_game()      # Сброс игры
                             start_time = time.time()       # Сброс таймера
                             waiting = False                # Выход из режима ожидания
-                            print("\n🔄 Game restarted!")
+                            print("\nGame restarted!")
                         elif event.key == pygame.K_ESCAPE:  # ESC - выход
                             waiting = False
                             running = False

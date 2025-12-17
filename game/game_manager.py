@@ -5,6 +5,7 @@ from .sprite_loader import SpriteLoader
 from .sound_manager import SoundManager
 import os
 import random
+from .database import save_score
 
 
 class GameManager:
@@ -370,6 +371,11 @@ class GameManager:
                      self.screen_height // 2 + 250))
 
     def draw_game_over(self, screen) :
+
+        if not hasattr(self, 'score_saved'):  # Проверяем, не сохраняли ли уже
+            save_score(self.player_name, self.score)
+            self.score_saved = True  # Помечаем, что сохранили
+
         # Полупрозрачное затемнение
         overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
         overlay.fill((50, 0, 30, 150))       # Темно-розовый с меньшей прозрачностью

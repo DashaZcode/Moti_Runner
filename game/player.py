@@ -149,12 +149,12 @@ class Player(BaseObject):   # Класс игрока, управдяемого 
             super().draw(screen)      # Вызываем метод отрисовки родительского класса
 
 
-def reset(self):
-        """Сброс состояния игрока"""
-        self.rect.y = self.ground_y  # Возвращаем на уровень земли
-        self.velocity_y = 0  # Сбрасываем скорость
-        self.is_jumping = False  # Сбрасываем флаг прыжка
-        self.invulnerable = False  # Выключаем неуязвимость
-        self.invulnerable_timer = 0  # Сбрасываем таймер неуязвимости
-        self.visible = True  # Гарантируем видимость
-        self.set_animation("run")  # Устанавливаем анимацию бега
+    def reset(self):
+            """Сброс состояния игрока"""
+            self.rect.y = self.ground_y  # Возвращаем на уровень земли
+            self.velocity_y = 0  # Сбрасываем скорость
+            self.is_jumping = False  # Сбрасываем флаг прыжка
+            self.invulnerable = False  # Выключаем неуязвимость
+            self.invulnerable_timer = 0  # Сбрасываем таймер неуязвимости
+            self.visible = True  # Гарантируем видимость
+            self.set_animation("run")  # Устанавливаем анимацию бега
