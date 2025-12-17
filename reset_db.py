@@ -1,9 +1,22 @@
+"""Модуль reset_db - сброс и пересоздание базы данных.
+
+Содержит функцию для полного пересоздания базы данных игры
+с таблицей для хранения результатов.
+"""
 
 import psycopg2
 import sys
 
 
 def reset_database():
+    """Полностью пересоздает базу данных игры.
+
+    Удаляет существующую базу данных moti_game и создает ее заново
+    с таблицей scores для хранения результатов.
+
+    Returns:
+        bool: True если операция успешна, иначе False.
+    """
     try:
         #Удаляем и создаем базу
         conn = psycopg2.connect("dbname=postgres user=postgres password=11111 host=localhost")

@@ -1,3 +1,9 @@
+"""Модуль game_manager - основной менеджер игры.
+
+Содержит класс GameManager, который управляет всей игровой логикой,
+объектами, событиями и отрисовкой, координируя работу всех компонентов.
+"""
+
 import pygame
 from .player import Player
 from .obstacle import Obstacle
@@ -9,6 +15,23 @@ from .database import save_score
 
 
 class GameManager:
+    """Основной менеджер игры, управляющий логикой, объектами и отрисовкой.
+
+    Attributes:
+        screen_width (int): Ширина игрового окна.
+        screen_height (int): Высота игрового окна.
+        ground_y (int): Координата Y уровня земли.
+        background_sprites (dict): Загруженные фоновые спрайты.
+        sound_manager (SoundManager): Менеджер звуков.
+        player (Player): Объект игрока.
+        obstacles (list): Список активных препятствий.
+        clouds (list): Список облаков.
+        score (int): Текущий счет игрока.
+        lives (int): Количество жизней.
+        game_speed (int): Текущая скорость игры.
+        game_over (bool): Флаг завершения игры.
+        is_paused (bool): Флаг паузы.
+    """
 
     def __init__(self, screen_width=1200, screen_height=800, initial_speed=400):
 
@@ -56,7 +79,11 @@ class GameManager:
         self.sound_manager.play_music() #запуск фоновой музыки
 
     def load_background_sprites(self): #загрузка фоновых спрайтов
+        """Загружает фоновые спрайты из папки assets/background.
 
+        Returns:
+            dict: Словарь с загруженными спрайтами.
+        """
         assets_path = SpriteLoader.get_assets_path()
         background_path = os.path.join(assets_path, 'background')
 
@@ -82,7 +109,11 @@ class GameManager:
         return sprites
 
     def load_ui_sprites(self): #Загрузка UI спрайтов
+        """Загружает UI спрайты из папки assets/ui.
 
+        Returns:
+            dict: Словарь с загруженными UI спрайтами.
+        """
         assets_path = SpriteLoader.get_assets_path()
         ui_path = os.path.join(assets_path, 'ui')
 
@@ -102,6 +133,7 @@ class GameManager:
         return sprites
 
     def create_initial_clouds(self): #создание начальных облаков
+        """Создает начальные облака со случайными параметрами."""
         for _ in range(5): #цикл 5 раз без переменной
             x = random.randint(0, self.screen_width)
             #случайное расположение облаков от 0 до ширины экрана
@@ -115,7 +147,11 @@ class GameManager:
             self.clouds.append({'x': x, 'y': y, 'speed': speed})
 
     def handle_events(self): #обработка событий
+        """Обрабатывает события игры.
 
+        Returns:
+            bool: False если нужно выйти из игры, иначе True.
+        """
         #йикл for, который проходит по ВСЕМ событиям в очереди событий pygame
         for event in pygame.event.get():
 
@@ -155,6 +191,7 @@ class GameManager:
         return True
 
     def toggle_pause(self): #включение/выключение паузы
+        """Переключает состояние паузы игры."""
         self.is_paused = not self.is_paused #нажимаем клавишу P, вызывается toggle_pause():
         if self.is_paused:
             self.sound_manager.play_sound('pause')
@@ -164,6 +201,11 @@ class GameManager:
             print("Игра работает")
 
     def update(self, dt): #игра
+        """Обновляет состояние игры.
+
+        Args:
+            dt (float): Время, прошедшее с прошлого кадра.
+        """
         if self.game_over or self.is_paused: #если на паузе или игрок умер, выходим из мтеода
             return
 
@@ -226,6 +268,11 @@ class GameManager:
 
 
     def draw_background(self, screen):
+        """Рисует фон игры.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         #screen - игровок окно
         #фон
         for y in range(self.screen_height):
@@ -269,6 +316,11 @@ class GameManager:
 
     #рисуем все
     def draw(self, screen):
+        """Рисует всю игру на экране.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         #фон
         self.draw_background(screen)
 
@@ -291,6 +343,11 @@ class GameManager:
 
 
     def draw_hud(self, screen) :
+        """Рисует интерфейс пользователя (счет, жизни, управление).
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         # Создаем текст с текущим счетом розовым цветом
         score_text = self.font.render(f'SCORE: {self.score}', True, (200, 100, 150))
         screen.blit(score_text, (30, 30))        # Рисуем текст в левом верхнем углу (координаты 30, 30)
@@ -332,6 +389,11 @@ class GameManager:
                          self.screen_height // 2 - 50))
 
     def draw_pause_menu(self, screen) :
+        """Рисует меню паузы.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
         # Полупрозрачный overlay
         overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
         overlay.fill((50, 0, 30, 180))       # Заливаем темно-розовым с прозрачностью (180 из 255)
@@ -371,6 +433,11 @@ class GameManager:
                      self.screen_height // 2 + 250))
 
     def draw_game_over(self, screen) :
+        """Рисует экран завершения игры.
+
+        Args:
+            screen (pygame.Surface): Поверхность для отрисовки.
+        """
 
         if not hasattr(self, 'score_saved'):  # Проверяем, не сохраняли ли уже
             save_score(self.player_name, self.score)
@@ -422,6 +489,7 @@ class GameManager:
 
 
     def reset_game(self):
+        """Сбрасывает игру к начальному состоянию."""
         self.player.reset()
         self.obstacles.clear()
         self.clouds.clear()
@@ -440,6 +508,11 @@ class GameManager:
         print("Game reset")
 
     def get_game_result(self):
+        """Возвращает результаты игры.
+
+        Returns:
+            dict: Словарь с результатами игры.
+        """
         #получение результатов игры
         return {
             'score': self.score,

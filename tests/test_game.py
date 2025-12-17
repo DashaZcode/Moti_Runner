@@ -1,3 +1,9 @@
+"""Модуль test_game - тесты для игровых компонентов.
+
+Содержит юнит-тесты для проверки корректности работы
+основных классов игры: BaseObject, Obstacle, Player и других.
+"""
+
 import unittest
 import pygame
 from game.base_object import BaseObject

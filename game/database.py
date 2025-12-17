@@ -1,8 +1,22 @@
+"""Модуль database - работа с базой данных результатов.
+
+Содержит функции для сохранения, получения и очистки результатов игры
+в PostgreSQL базе данных.
+"""
 
 import psycopg2
 
 
 def save_score(name, score):
+    """Сохраняет результат игры в базу данных.
+
+    Args:
+        name (str): Имя игрока.
+        score (int): Количество очков.
+
+    Returns:
+        bool: True если сохранение успешно, иначе False.
+    """
     try:
         conn = psycopg2.connect("host=localhost dbname=moti_game user=postgres password=11111")
         cur = conn.cursor()
@@ -31,6 +45,11 @@ def save_score(name, score):
 
 
 def get_all_scores():
+    """Получает все результаты из базы данных, отсортированные по убыванию.
+
+    Returns:
+        list: Список кортежей (name, score) с результатами.
+    """
     try:
         conn = psycopg2.connect("host=localhost dbname=moti_game user=postgres password=11111")
         cur = conn.cursor()
@@ -50,6 +69,11 @@ def get_all_scores():
 
 
 def clear_all_scores():
+    """Очищает все записи из таблицы результатов.
+
+    Returns:
+        bool: True если очистка успешна, иначе False.
+    """
     try:
         conn = psycopg2.connect("host=localhost dbname=moti_game user=postgres password=11111")
         cur = conn.cursor()

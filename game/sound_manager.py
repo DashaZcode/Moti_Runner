@@ -1,11 +1,26 @@
+"""Модуль sound_manager - менеджер звуков и музыки.
+
+Содержит класс SoundManager для управления звуковыми эффектами,
+фоновой музыкой и настройками громкости в игре.
+"""
+
 import pygame
 import os
 
 
 class SoundManager:
-    """Упрощенный менеджер звуков"""
+    """Менеджер звуков для игры.
+
+    Attributes:
+        sounds (dict): Словарь для хранения загруженных звуковых эффектов.
+        music_playing (bool): Флаг: играет ли фоновая музыка сейчас.
+        sound_enabled (bool): Флаг: включены ли звуковые эффекты.
+        music_enabled (bool): Флаг: включена ли фоновая музыка.
+        volume (float): Общая громкость от 0.0 (тихо) до 1.0 (максимум).
+    """
 
     def __init__(self):     # Инициализация менеджера звуков с настройками по умолчанию
+        """Инициализация менеджера звуков с настройками по умолчанию."""
         self.sounds = {}    # Словарь для хранения загруженных звуковых эффектов
         self.music_playing = False     # Флаг: играет ли фоновая музыка сейчас
         self.sound_enabled = True      # Флаг: включены ли звуковые эффекты
@@ -13,7 +28,11 @@ class SoundManager:
         self.volume = 0.5              # Общая громкость от 0.0 (тихо) до 1.0 (максимум)
 
     def load_sounds(self):
-        """Загрузка звуков"""
+        """Загружает звуки из папки assets/sounds.
+
+        Returns:
+            bool: True если хотя бы один звук был загружен, иначе False.
+        """
         sounds_path = "assets/sounds"     # Путь к папке со звуками
 
         if not os.path.exists(sounds_path):     # Проверяем, существует ли папка со звуками
@@ -31,7 +50,11 @@ class SoundManager:
         return len(self.sounds) > 0      # Возвращаем True если хотя бы один звук был загружен
 
     def preload(self):
-        """Инициализация звука"""
+        """Инициализирует звуковую систему и загружает звуки.
+
+        Returns:
+            bool: True если инициализация успешна, иначе False.
+        """
         if not pygame.mixer.get_init():     # Проверяем, инициализирован ли микшер pygame (звуковая система)
             try:
                 pygame.mixer.init()     # Пытаемся инициализировать звуковую систему
@@ -43,7 +66,11 @@ class SoundManager:
         return self.load_sounds()      # Загружаем звуковые эффекты
 
     def play_sound(self, name):
-        """Воспроизведение звука"""
+        """Воспроизводит звуковой эффект.
+
+        Args:
+            name (str): Имя звукового эффекта.
+        """
         if self.sound_enabled and name in self.sounds:     # Проверяем: включены ли звуки и есть ли такой звук в словаре
             try:
                 self.sounds[name].play()     # Воспроизводим звук
@@ -51,7 +78,11 @@ class SoundManager:
                 pass      # Если не удалось воспроизвести - игнорируем ошибку
 
     def play_music(self, loop=-1):
-        """Воспроизведение музыки"""
+        """Воспроизводит фоновую музыку.
+
+        Args:
+            loop (int): Количество повторений (-1 для бесконечного).
+        """
         if self.music_enabled:    # Проверяем, включена ли музыка
             try:
                 music_path = "assets/sounds/background.mp3"    # Путь к файлу фоновой музыки
@@ -66,7 +97,11 @@ class SoundManager:
                 pass     # Если не удалось загрузить или воспроизвести музыку
 
     def set_volume(self, volume):
-        """Установка громкости"""
+        """Устанавливает общую громкость.
+
+        Args:
+            volume (float): Громкость от 0.0 до 1.0.
+        """
         self.volume = max(0.0, min(1.0, volume))     # Ограничиваем громкость в диапазоне от 0.0 до 1.0
         pygame.mixer.music.set_volume(self.volume * 0.3)    # Устанавливаем громкость музыки (делаем её тише звуков)
 
@@ -74,12 +109,20 @@ class SoundManager:
             sound.set_volume(self.volume)
 
     def toggle_sound(self):
-        """Переключение звуков"""
+        """Переключает звуковые эффекты.
+
+        Returns:
+            bool: Новое состояние звуковых эффектов.
+        """
         self.sound_enabled = not self.sound_enabled    # Меняем состояние на противоположное
         return self.sound_enabled     # Возвращаем новое состояние
 
     def toggle_music(self):
-        """Переключение музыки"""
+        """Переключает фоновую музыку.
+
+        Returns:
+            bool: Новое состояние музыки.
+        """
         self.music_enabled = not self.music_enabled    # Меняем состояние музыки на противоположное
 
         if self.music_enabled and not self.music_playing:     # Если музыку включили и она не играет - запускаем
